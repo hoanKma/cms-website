@@ -9,54 +9,10 @@ export const MENU_DATA = [
     route: '/'
   },
 
-  // {
-  //   title: 'Bài viết ',
-  //   icon: FaBookOpen,
-  //   sub: [
-  //     { title: 'Thể loại', icon: BiCategory, route: '/blog-category' },
-  //     {
-  //       title: 'Tạo mới Thể loại',
-  //       route: '/blog-category/tao-moi',
-  //       hiddenMenu: true
-  //     },
-  //     {
-  //       title: 'Cập nhật Thể loại',
-  //       route: '/blog-category/cap-nhat',
-  //       hiddenMenu: true
-  //     },
-  //     {
-  //       title: 'Chi tiết Thể loại',
-  //       route: '/blog-category/chi-tiet',
-  //       hiddenMenu: true
-  //     },
-  //     { title: 'Bài viết', icon: BsFileEarmarkPost, route: '/blog' },
-  //     {
-  //       title: 'Tạo mới Bài viết',
-  //       route: '/blog/tao-moi',
-  //       hiddenMenu: true
-  //     },
-  //     {
-  //       title: 'Cập nhật Bài viết',
-  //       route: '/blog/cap-nhat',
-  //       hiddenMenu: true
-  //     },
-  //     {
-  //       title: 'Chi tiết Bài viết',
-  //       route: '/blog/chi-tiet',
-  //       hiddenMenu: true
-  //     }
-  //   ]
-  // },
   {
     title: 'Bộ đề',
     icon: ImNewspaper,
     route: '/bo-de'
-  },
-
-  {
-    title: 'Banner',
-    icon: FaImages,
-    route: '/banners'
   },
 
   {

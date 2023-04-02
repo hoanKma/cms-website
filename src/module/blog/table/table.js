@@ -3,10 +3,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import EffectScreen from 'component/effect-screen';
 import Pagination from 'component/pagination';
 import Table from 'component/table';
-import dayjs from 'dayjs';
 import { memo, useEffect, useMemo, useRef } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { TABLE_CONFIG } from 'util/const';
+import { QUESTION_LEVEL, SUBJECT_DATA, TABLE_CONFIG } from 'util/const';
 import TableAction from './action';
 import { useQueryTableDataQuestion } from './table.query';
 
@@ -15,19 +14,15 @@ const BlogTable = memo(() => {
     return [
       {
         title: 'Môn',
-        field: 'blog_category_id'
+        field: 'subjectId'
       },
       {
         title: 'Cấp độ',
-        field: 'blog_category_id'
+        field: 'level'
       },
       {
         title: 'Nội dung',
         field: 'title'
-      },
-      {
-        title: 'Mô tả',
-        field: 'description'
       }
     ];
   }, []);
@@ -56,20 +51,15 @@ const BlogTable = memo(() => {
   }, [queryClient]);
 
   const customRow = (field, data) => {
+    if (field === 'subjectId') {
+      const subject = SUBJECT_DATA.find((item) => item.value === data);
+      return <Text>{subject.label}</Text>;
+    }
+    if (field === 'level') {
+      return <Text>{QUESTION_LEVEL[data].label}</Text>;
+    }
     if (field === 'title') {
-      return <Text fontWeight={500}>{data}</Text>;
-    }
-    if (field === 'fileNum') {
-      return <Text>{data || 0}</Text>;
-    }
-    if (field === 'date') {
-      return <Text>{dayjs(data).format('DD/MM/YYYY - HH:mm')}</Text>;
-    }
-    if (field === 'description') {
       return <Text noOfLines={2} dangerouslySetInnerHTML={{ __html: data }} />;
-    }
-    if (field === 'more_info') {
-      return <Text>{data}</Text>;
     }
   };
 

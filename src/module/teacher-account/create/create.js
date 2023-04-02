@@ -1,15 +1,9 @@
 import { Flex } from '@chakra-ui/react';
 import { ButtonBack, ButtonSubmit } from 'component/button';
-import { ErrorScreen, LoadingScreen } from 'component/effect-screen';
-import dayjs from 'dayjs';
-import { isEmpty } from 'lodash';
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-import { useCreateWithMedia, useUpdateWithMedia } from 'util/hook';
-import { useQueryDetail, useQueryMedia } from 'util/query';
 import { useResetAtom } from './custom-hook';
-import { imagesListAddedAtom, imagesListAtom, imagesListDeletedAtom, valueUrlAtom } from './recoil';
+import { useMutationCreateTeacherAccount } from './mutate';
 import Fullname from './subs/fullname';
 import Password from './subs/password';
 import SelectType from './subs/select-type';
@@ -24,147 +18,79 @@ const TeacherAccountCreate = () => {
   const selectTypeRef = useRef();
 
   const params = useParams();
-  const { id, page } = params;
+  const { id } = params;
   const navigate = useNavigate();
 
   const [disable, setDisable] = useState(true);
-  const [enableStatus, setEnableStatus] = useState(true);
-
-  const valueUrl = useRecoilValue(valueUrlAtom);
-  const imagesList = useRecoilValue(imagesListAtom);
-  const imagesListAdded = useRecoilValue(imagesListAddedAtom);
-  const imagesListDeleted = useRecoilValue(imagesListDeletedAtom);
 
   const resetAtom = useResetAtom();
 
   const onGoBack = useCallback(() => navigate(-1), [navigate]);
 
-  const {
-    isLoading: loadingDetail,
-    data: infoDetail,
-    error
-  } = useQueryDetail(['GET_BANNER_DETAIL', page], `/solr/banner/select`, id);
-  const { data: mediaList, error: errorMedia } = useQueryMedia(id);
-  const { isLoading: loadingCreate, createWithMedia } = useCreateWithMedia();
-  const { isLoading: loadingUpdate, updateWithMedia } = useUpdateWithMedia();
+  const { mutate: createTeacherAccount, isLoading: loadingCreate } = useMutationCreateTeacherAccount();
 
-  const loadingAction = useMemo(() => loadingCreate || loadingUpdate, [loadingCreate, loadingUpdate]);
+  // const loadingAction = useMemo(() => loadingCreate || loadingUpdate, [loadingCreate, loadingUpdate]);
 
   useEffect(() => {
     resetAtom();
   }, [resetAtom]);
 
-  useEffect(() => {
-    setEnableStatus(infoDetail?.enable);
-  }, [infoDetail?.enable, resetAtom]);
-
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault();
 
-      const images = imageRef?.current?.get();
-      const url = urlRef.current.get();
-      const created_date = dayjs().valueOf();
+      const fullName = fullnameRef?.current?.get();
+      const username = usernameRef?.current?.get();
+      const password = passwordRef?.current?.get();
+      const subjectIds = selectTypeRef?.current?.get().map((item) => {
+        return item.value;
+      });
 
       if (id) {
         // update
         const params = {
-          id,
-          url,
-          created_date: infoDetail?.created_date,
-          updated_date: created_date,
-          fileNum: images.length,
-          enable: enableStatus
+          id
         };
-        const imagesAdd = imageRef?.current?.getAdd();
-        const imagesDelete = imageRef?.current?.getDelete();
-
-        const fileDataAdd = imagesAdd?.map((item, index) => {
-          return {
-            file: item,
-            description: images[images.length]?.description + index
-          };
-        });
-
-        const fileData = {
-          add: fileDataAdd,
-          delete: imagesDelete?.map((item) => ({ file: item }))
-        };
-
-        updateWithMedia({
-          solrTable: 'banner',
-          params,
-          fileData,
-          onSuccess: () => navigate(`/banners`)
-        });
       } else {
         //add
         const params = {
-          url,
-          created_date,
-          fileNum: images.length,
-          enable: enableStatus
+          fullName,
+          username,
+          password,
+          subjectIds,
+          role: 'TEACHER',
+          status: 'ACTIVE'
         };
-        const fileData = images.map((item, index) => {
-          return {
-            file: item,
-            description: index
-          };
-        });
-
-        createWithMedia({
-          params,
-          solrTable: 'banner',
-          createdDate: created_date,
-          fileData,
-          onSuccess: () => navigate(`/banners`)
-        });
+        createTeacherAccount(params);
       }
     },
-    [createWithMedia, enableStatus, id, infoDetail?.created_date, navigate, updateWithMedia]
+    [createTeacherAccount, id]
   );
 
-  useEffect(() => {
-    if (infoDetail && id) {
-      const { url } = infoDetail;
-      urlRef.current?.set(url);
-    }
-  }, [id, infoDetail]);
+  // if (id) {
+  //   if (loadingDetail) {
+  //     return <LoadingScreen />;
+  //   }
 
-  useEffect(() => {
-    if (!id) {
-      setDisable(!valueUrl || isEmpty(imagesList));
-    } else {
-      const statusImage = (isEmpty(imagesListDeleted) && isEmpty(imagesListAdded)) || isEmpty(imagesList);
-      const statusTick = enableStatus === infoDetail?.enable || (Array.isArray(imagesList) && imagesList?.length === 0);
-      const statusValueUrl = !valueUrl || (Array.isArray(imagesList) && imagesList?.length === 0);
-
-      setDisable(statusValueUrl && statusTick && statusImage);
-    }
-  }, [enableStatus, id, imagesList, imagesListAdded, imagesListDeleted, infoDetail?.enable, valueUrl]);
-
-  if (id) {
-    if (loadingDetail) {
-      return <LoadingScreen />;
-    }
-
-    if (error || errorMedia || !infoDetail) {
-      return <ErrorScreen message={error.message} />;
-    }
-  }
+  //   if (error || errorMedia || !infoDetail) {
+  //     return <ErrorScreen message={error.message} />;
+  //   }
+  // }
 
   return (
     <Flex w="full">
       <Flex w={2 / 3} mx="auto" mt={10} flexDirection="column">
         <form onSubmit={onSubmit}>
           <Fullname ref={fullnameRef} />
+          <SelectType ref={selectTypeRef} />
           <Username ref={usernameRef} />
           <Password ref={passwordRef} />
-          <SelectType ref={selectTypeRef} />
+
           <Flex justifyContent="center" mt={5} mb={10} gap={4}>
             <ButtonBack onClick={onGoBack} />
 
-            <ButtonSubmit title={id ? 'Cập nhật' : 'Tạo mới'} isLoading={loadingAction} isDisabled={disable} />
+            {/* <ButtonSubmit title={id ? 'Cập nhật' : 'Tạo mới'} isLoading={loadingAction} isDisabled={disable} /> */}
+            <ButtonSubmit title={id ? 'Cập nhật' : 'Tạo mới'} isLoading={loadingCreate} />
           </Flex>
         </form>
       </Flex>

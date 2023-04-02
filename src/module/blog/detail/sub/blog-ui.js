@@ -1,6 +1,5 @@
 import { Flex, Heading, Link, Text } from '@chakra-ui/react';
 import FieldLabel from 'component/field-label';
-import dayjs from 'dayjs';
 import { memo } from 'react';
 // import renderHtml from 'react-html-parser';
 import { AdvancedImgTag } from 'component/transform-html/transform-html.tag';
@@ -8,9 +7,10 @@ import parse, { domToReact } from 'html-react-parser';
 import { parse as parseHtml } from 'node-html-parser';
 
 const BlogUi = ({ infoDetail }) => {
-  const { title, created_date, content } = infoDetail;
+  const { title = '', answers, explanation = 'Chưa có phần giải thích' } = infoDetail || {};
+  console.log('infoDetail', infoDetail);
 
-  const rawHtml = parseHtml(content);
+  const rawHtml = parseHtml(title);
   const imgElements = rawHtml.querySelectorAll('img') || [];
   const imageUrls = imgElements.map((item) => item.attrs.src);
 
@@ -84,13 +84,24 @@ const BlogUi = ({ infoDetail }) => {
       <FieldLabel title="Giao diện Câu hỏi" />
 
       <Flex direction="column" border={'1px dashed #F7941D'} borderRadius="5px" padding={'10px'} gap={4}>
-        <Heading as="h3" fontSize={'32px'}>
-          {title}
+        <Heading as="h3" fontSize={'22px'}>
+          Câu hỏi
         </Heading>
 
-        <Text color={'#828282'}>{dayjs(created_date).format('DD/MM/YYYY - HH:mm')}</Text>
+        {parse(title, options)}
+        {answers?.map((item, index) => {
+          return (
+            <Flex key={index} gap={4} color={item.isCorrect && '#F6941F'}>
+              <Text fontWeight={item.isCorrect && 800}>{item.value}.</Text>
+              <Text fontWeight={item.isCorrect && 800}>{parse(item.label, options)}</Text>
+            </Flex>
+          );
+        })}
 
-        {parse(content, options)}
+        <Heading as="h3" fontSize={'22px'}>
+          Giải thích
+        </Heading>
+        {parse(explanation, options)}
       </Flex>
     </Flex>
   );

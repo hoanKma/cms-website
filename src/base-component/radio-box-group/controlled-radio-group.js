@@ -4,7 +4,7 @@ import { Flex, Radio, RadioGroup } from '@chakra-ui/react';
 import { useEffect } from 'react';
 
 const ControlledRadioGroup = forwardRef((props, ref) => {
-  const { options, selectedValue, customValidate, isRequired, onError, numOfColumn } = props;
+  const { options, selectedValue, customValidate, isRequired, onError, numOfColumn, direction } = props;
   const [value, setValue] = useState(selectedValue);
   const firstTime = useRef(false);
 
@@ -53,7 +53,7 @@ const ControlledRadioGroup = forwardRef((props, ref) => {
     >
       <Flex wrap={'wrap'}>
         {options.map((option, index) => (
-          <Flex gap={3} key={index} maxW={`calc(100%/${numOfColumn || 2})`} padding={'10px'}>
+          <Flex gap={3} key={index} w={'50%'} padding={'10px'}>
             <Radio key={index} value={option.value} name={option.text}>
               {option.text}
             </Radio>

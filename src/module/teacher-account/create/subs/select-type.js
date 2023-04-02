@@ -27,7 +27,7 @@ const SelectType = forwardRef((_, ref) => {
   }, []);
 
   return (
-    <Flex flexDirection="column" mt={10} zIndex={1}>
+    <Flex flexDirection="column" mt={5}>
       <FieldLabel title="Môn" isRequired />
       <DropDownlist
         ref={dropDownListRef}

@@ -1,10 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
+import { useLocation } from 'react-router-dom';
 import API from 'util/api';
 
 export const useQueryTableDataQuestion = () => {
-  return useQuery(['GET_TABLE_QUESTION'], () => {
+  const location = useLocation();
+  const { search } = location;
+  return useQuery(['GET_TABLE_QUESTION', search], () => {
     return API.request({
-      url: '/questions'
+      url: `/questions${search || '?page=1'}&size=10`
     });
   });
 };

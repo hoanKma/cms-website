@@ -4,6 +4,7 @@ import FieldLabel from 'component/field-label/field-label';
 import { memo, useCallback, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMutationCreateQuestion } from './mutate';
+import FormRadioGroup from './sub/answer';
 import FieldContent from './sub/input-content';
 import InputExplan from './sub/input-explan';
 import SelectCategory from './sub/select-category';
@@ -49,11 +50,11 @@ const BlogCreate = () => {
       const subjectId = categoryRef?.current?.get()?.value;
       const level = levelRef?.current?.get()?.value;
       const title = contentRef?.current?.getHtml();
-      const explantion = explanRef?.current?.getHtml();
+      const explanation = explanRef?.current?.getHtml();
 
       const params = {
         title,
-        explantion,
+        explanation,
         subjectId,
         security: isHot,
         level,
@@ -97,6 +98,7 @@ const BlogCreate = () => {
           <SelectCategory ref={categoryRef} />
           <SelectLevel ref={levelRef} />
           <FieldContent ref={contentRef} />
+          <FormRadioGroup />
           <InputExplan ref={explanRef} />
           <Flex justifyContent="center" mt={16} mb={10} gap={8}>
             <ButtonBack onClick={onGoBack} />
