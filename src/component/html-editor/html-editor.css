@@ -1,0 +1,97 @@
+.vndirect-icon-upload-file-wrapper{
+  width: 32px;
+  height: 32px;
+  border-radius: 3px;
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.vndirect-icon-upload-file {
+  clip-path: polygon(70% 0, 100% 30%, 100% 100%, 0 100%, 0 0);
+  background-color: #7b7b7b;
+  width: 16px;
+  height: 20px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-evenly;
+  flex-direction: column;
+  padding-left: 3px;
+}
+
+
+.vndirect-icon-upload-file-wrapper:hover{
+  background-color: #FFF;
+  border: 1px solid #e6e6e6;
+}
+
+.vndirect-icon-upload-file-line-1{
+  height: 2px;
+  width: 5px;
+  background-color: #FFF;
+  border-radius: 1px;
+}
+
+.vndirect-icon-upload-file-line-2{
+  height: 2px;
+  width: 9px;
+  background-color: #FFF;
+  border-radius: 1px;
+}
+
+.vndirect-icon-upload-file-line-3{
+  height: 2px;
+  width: 9px;
+  background-color: #FFF;
+  border-radius: 1px;
+}
+
+.toastui-editor-defaultUI .toastui-editor-mode-switch {
+  display: none!important;
+}
+
+.toastui-editor-defaultUI .toastui-editor-main-container .toastui-editor-contents{
+  font-family: 'Open Sans',sans-serif!important;
+  font-size: 14px!important;
+}
+
+/* Hide heading h1, h5, h6  */
+.toastui-editor-defaultUI .toastui-editor-popup-body li[data-level="1"]{
+  display: none;
+}
+
+.toastui-editor-defaultUI .toastui-editor-popup-body li[data-level="5"]{
+  display: none;
+}
+
+.toastui-editor-defaultUI .toastui-editor-popup-body li[data-level="6"]{
+  display: none;
+}
+
+.vndirect-icon-embed-youtube {
+  width: 28px;
+  height: 20px;
+  font-size: 11px;
+  line-height: 10.5px;
+  text-align: center;
+  color: #828282;
+  font-weight: 700;
+}
+
+.toastui-editor-main-container .toastui-editor-contents h1{
+  font-size: 17px!important;
+}
+
+.toastui-editor-main-container .toastui-editor-contents h2{
+  font-size: 16px!important;
+}
+
+.toastui-editor-main-container .toastui-editor-contents h3{
+  font-size: 15px!important;
+}
+
+.toastui-editor-main-container .toastui-editor-contents h4{
+  font-size: 14px!important;
+}
