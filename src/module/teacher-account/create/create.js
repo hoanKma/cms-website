@@ -4,18 +4,25 @@ import { ErrorScreen, LoadingScreen } from 'component/effect-screen';
 import dayjs from 'dayjs';
 import { isEmpty } from 'lodash';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { useCreateWithMedia, useUpdateWithMedia } from 'util/hook';
 import { useQueryDetail, useQueryMedia } from 'util/query';
 import { useResetAtom } from './custom-hook';
 import { imagesListAddedAtom, imagesListAtom, imagesListDeletedAtom, valueUrlAtom } from './recoil';
-
-import FieldScreen from './subs/input-screen';
+import Fullname from './subs/fullname';
+import Password from './subs/password';
+import SelectType from './subs/select-type';
+import Username from './subs/username';
 
 const TeacherAccountCreate = () => {
   const imageRef = useRef();
   const urlRef = useRef();
+  const fullnameRef = useRef();
+  const usernameRef = useRef();
+  const passwordRef = useRef();
+  const selectTypeRef = useRef();
+
   const params = useParams();
   const { id, page } = params;
   const navigate = useNavigate();
@@ -29,6 +36,8 @@ const TeacherAccountCreate = () => {
   const imagesListDeleted = useRecoilValue(imagesListDeletedAtom);
 
   const resetAtom = useResetAtom();
+
+  const onGoBack = useCallback(() => navigate(-1), [navigate]);
 
   const {
     isLoading: loadingDetail,
@@ -134,10 +143,6 @@ const TeacherAccountCreate = () => {
     }
   }, [enableStatus, id, imagesList, imagesListAdded, imagesListDeleted, infoDetail?.enable, valueUrl]);
 
-  const onChangeSwitch = useCallback((e) => {
-    setEnableStatus(e.target.checked);
-  }, []);
-
   if (id) {
     if (loadingDetail) {
       return <LoadingScreen />;
@@ -152,12 +157,13 @@ const TeacherAccountCreate = () => {
     <Flex w="full">
       <Flex w={2 / 3} mx="auto" mt={10} flexDirection="column">
         <form onSubmit={onSubmit}>
-          <FieldScreen ref={urlRef} />
-
+          <Fullname ref={fullnameRef} />
+          <Username ref={usernameRef} />
+          <Password ref={passwordRef} />
+          <SelectType ref={selectTypeRef} />
           <Flex justifyContent="center" mt={5} mb={10} gap={4}>
-            <Link to="/banners">
-              <ButtonBack />
-            </Link>
+            <ButtonBack onClick={onGoBack} />
+
             <ButtonSubmit title={id ? 'Cập nhật' : 'Tạo mới'} isLoading={loadingAction} isDisabled={disable} />
           </Flex>
         </form>

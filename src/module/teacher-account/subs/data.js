@@ -1,17 +1,12 @@
 export const getTableHeader = () => {
   return [
     {
-      title: 'Đường dẫn màn hình hiển thị',
-      field: 'url'
+      title: 'Họ và tên giáo viên',
+      field: 'fullName'
     },
     {
-      title: 'Số lượng ảnh',
-      field: 'fileNum'
-    },
-
-    {
-      title: 'Trạng thái',
-      field: 'enable'
+      title: 'Username',
+      field: 'username'
     }
   ];
 };

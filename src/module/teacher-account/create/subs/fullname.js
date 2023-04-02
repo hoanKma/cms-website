@@ -5,7 +5,7 @@ import { forwardRef, memo, useCallback, useImperativeHandle, useRef, useState } 
 import { useSetRecoilState } from 'recoil';
 import { valueUrlAtom } from '../recoil';
 
-const FieldScreen = forwardRef((_, ref) => {
+const FullName = forwardRef((_, ref) => {
   const inputRef = useRef();
   const [error, setError] = useState();
 
@@ -28,21 +28,17 @@ const FieldScreen = forwardRef((_, ref) => {
   }));
 
   return (
-    <Flex flexDirection="column" mt={10}>
-      <FieldLabel title="Đường dẫn màn hình hiển thị" isRequired />
-      <Flex direction={'column'} gap={4}>
-        <Flex direction={'column'}>
-          <Input ref={inputRef} required onError={onError} onChange={onChange} placeHolder="Ví dụ: /trang-chu" />
+    <Flex flexDirection="column" mt={5}>
+      <FieldLabel title="Họ và tên Giáo viên" isRequired />
+      <Input ref={inputRef} required onError={onError} onChange={onChange} placeHolder={'Nhập họ và tên giáo viên'} />
 
-          {!!error && (
-            <Text color="red" mt={0.5}>
-              {error}
-            </Text>
-          )}
-        </Flex>
-      </Flex>
+      {!!error && (
+        <Text color="red" mt={0.5}>
+          {error}
+        </Text>
+      )}
     </Flex>
   );
 });
 
-export default memo(FieldScreen);
+export default memo(FullName);

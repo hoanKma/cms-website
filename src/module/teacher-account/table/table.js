@@ -11,7 +11,7 @@ import { getTableHeader } from '../subs/data';
 import TableAction from './action';
 import { useQueryTableDataTeacherAccount } from './table.query';
 
-const ManageBannersTable = memo(() => {
+const TeacherAccountTable = memo(() => {
   const tableRef = useRef();
   const { data, isLoading, error } = useQueryTableDataTeacherAccount();
 
@@ -61,4 +61,4 @@ const ManageBannersTable = memo(() => {
   );
 });
 
-export default ManageBannersTable;
+export default TeacherAccountTable;

@@ -4,10 +4,10 @@ import queryString from 'query-string';
 import { memo, useCallback } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { paramsToObject } from 'util/helper';
-import ManageBannersTable from './table';
 import Filter from './table/filter';
+import TeacherAccountTable from './table/table';
 
-const ManageBanners = () => {
+const TeacherAccount = () => {
   const location = useLocation();
   const parsed = queryString.parse(location.search);
   const setSearchParams = useSearchParams()[1];
@@ -30,10 +30,10 @@ const ManageBanners = () => {
       </TableControl>
 
       <Flex mt={5} w="full">
-        <ManageBannersTable />
+        <TeacherAccountTable />
       </Flex>
     </Flex>
   );
 };
 
-export default memo(ManageBanners);
+export default memo(TeacherAccount);
