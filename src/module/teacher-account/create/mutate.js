@@ -9,7 +9,7 @@ export const useMutationCreateTeacherAccount = () => {
     (params) =>
       API.request({
         method: 'POST',
-        url: '/auth/register',
+        url: '/users',
         params
       }),
     {

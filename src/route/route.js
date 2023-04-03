@@ -34,12 +34,6 @@ const AppRoute = () => {
           <Route path="chi-tiet/:id" element={<TeacherAccountDetail />} />
         </Route>
 
-        <Route path="bo-de">
-          <Route path="" element={<Blog />} />
-          <Route path="tao-moi" element={<BlogCreate />} />
-          <Route path="cap-nhat/:id" element={<BlogCreate />} />
-          <Route path="chi-tiet/:id" element={<BlogDetail />} />
-        </Route>
         <Route path="cau-hoi">
           <Route path="" element={<Blog />} />
           <Route path="tao-moi" element={<BlogCreate />} />

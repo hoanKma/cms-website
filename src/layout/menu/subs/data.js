@@ -1,18 +1,10 @@
 import { FaHome, FaImages, FaListAlt, FaThLarge } from 'react-icons/fa';
 
-import { ImNewspaper } from 'react-icons/im';
-
 export const MENU_DATA = [
   {
     title: 'Trang chủ',
     icon: FaHome,
     route: '/'
-  },
-
-  {
-    title: 'Bộ đề',
-    icon: ImNewspaper,
-    route: '/bo-de'
   },
 
   {
