@@ -47,6 +47,10 @@ export const SUBJECT_DATA = [
   {
     label: 'Giáo dục công dân',
     value: '8'
+  },
+  {
+    label: 'Tất cả',
+    value: '9'
   }
 ];
 

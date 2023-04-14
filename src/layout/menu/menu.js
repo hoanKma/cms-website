@@ -1,10 +1,11 @@
 import { Flex, Text } from '@chakra-ui/react';
 import Menu from 'component/menu';
+import { useQueryUserInfo } from 'layout/header/query';
 import preval from 'preval.macro';
 import { memo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MAIN_COLOR } from 'util/const';
-import { MENU_DATA } from './subs/data';
+import { MENU_DATA, MENU_DATA_TEACHER } from './subs/data';
 import MenuHeader from './subs/menu-header';
 
 export const MainMenu = memo(() => {
@@ -24,20 +25,26 @@ export const MainMenu = memo(() => {
   const navigate = useNavigate();
   const onNavigate = useCallback((route) => navigate(route, { replace: true }), [navigate]);
 
-  const DATA = MENU_DATA.filter((item) => !item.hiddenMenu).map((item) => {
-    const { title, icon, route, sub: subItem } = item;
-    const sub = subItem
-      ? subItem
-          .filter((item) => !item.hiddenMenu)
-          .map((s) => ({
-            title: s.title,
-            icon: s.icon,
-            route: s.route,
-            action: () => onNavigate(s.route)
-          }))
-      : undefined;
-    return { title, icon, sub, action: () => onNavigate(route) };
-  });
+  const { data: userInfo } = useQueryUserInfo();
+
+  const { role } = userInfo || {};
+
+  const DATA = (role === 'ADMIN' ? MENU_DATA : MENU_DATA_TEACHER)
+    .filter((item) => !item.hiddenMenu)
+    .map((item) => {
+      const { title, icon, route, sub: subItem } = item;
+      const sub = subItem
+        ? subItem
+            .filter((item) => !item.hiddenMenu)
+            .map((s) => ({
+              title: s.title,
+              icon: s.icon,
+              route: s.route,
+              action: () => onNavigate(s.route)
+            }))
+        : undefined;
+      return { title, icon, sub, action: () => onNavigate(route) };
+    });
 
   return (
     <Flex direction="column" position="fixed" top={0} left={0} w="280px">

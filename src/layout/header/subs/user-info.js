@@ -5,11 +5,16 @@ import Image from 'component/image';
 import { memo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom/dist';
 import { LS_KEY_SB_JWT } from 'util/const';
+import { useQueryUserInfo } from '../query';
 import { useMutationLogOut } from './mutate';
 
 const UserInfo = () => {
   const navigate = useNavigate();
   const { mutate: logout } = useMutationLogOut();
+
+  const { data: userInfo } = useQueryUserInfo();
+
+  const { fullName } = userInfo || {};
 
   const onLogout = useCallback(() => {
     localStorage.removeItem(LS_KEY_SB_JWT);
@@ -25,7 +30,7 @@ const UserInfo = () => {
           <Button borderRadius={20}>
             <Image src={UserAvatarDefault} width={9} height={9} />
             <Text as="span" ml={3}>
-              Admin
+              {fullName}
             </Text>
           </Button>
         </Flex>

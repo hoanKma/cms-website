@@ -2,6 +2,7 @@ import Blog from 'module/blog';
 import BlogCreate from 'module/blog/create';
 import BlogDetail from 'module/blog/detail';
 import Home from 'module/demo/main';
+import InfoDetail from 'module/info';
 import { Login } from 'module/login-logout';
 import Main from 'module/main';
 import TeacherAccountCreate from 'module/teacher-account/create';
@@ -26,6 +27,11 @@ const AppRoute = () => {
       <Route path="/dang-nhap" element={<Login />} />
       <Route element={<Main />}>
         <Route index element={<Home />} />
+
+        <Route path="tai-khoan">
+          <Route path="" element={<InfoDetail />} />
+          <Route path="cap-nhat/:id" element={<TeacherAccountCreate />} />
+        </Route>
 
         <Route path="teacher-account">
           <Route path="" element={<TeacherAccount />} />

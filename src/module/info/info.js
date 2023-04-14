@@ -1,28 +1,24 @@
 import { Flex, Heading, List, ListIcon, ListItem, Text } from '@chakra-ui/react';
 import { ErrorScreen, LoadingScreen } from 'component/effect-screen';
 import dayjs from 'dayjs';
+import { useQueryUserInfo } from 'layout/header/query';
 import { memo } from 'react';
 import { IoMdCheckmarkCircle } from 'react-icons/io';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { SUBJECT_DATA } from 'util/const';
-import { useQueryUserInfoByID } from '../query';
 
-const TeacherAccountDetail = () => {
-  const { id } = useParams();
-
-  const { data: userInfobyId, isLoading, isError } = useQueryUserInfoByID(id);
+const InfoDetail = () => {
+  const { data: userInfo, isLoading, isError } = useQueryUserInfo();
 
   if (isLoading) {
     return <LoadingScreen />;
   }
 
-  if (isError || !userInfobyId) {
+  if (isError || !userInfo) {
     return <ErrorScreen />;
   }
 
-  const { createdAt, fullName, subjectIds, username, followers } = userInfobyId;
-
-  console.log('userInfobyId', userInfobyId);
+  const { createdAt, fullName, subjectIds, username, id, followers } = userInfo;
 
   return (
     <Flex direction="column" w={2 / 3} mx="auto" gap={10} my={10}>
@@ -88,7 +84,7 @@ const TeacherAccountDetail = () => {
         </Flex>
       </Flex>
 
-      <Link to={`../cap-nhat/${id}`}>
+      <Link to={`./cap-nhat/${id}`}>
         <Text
           bgColor="#f7941e"
           as="span"
@@ -106,4 +102,4 @@ const TeacherAccountDetail = () => {
   );
 };
 
-export default memo(TeacherAccountDetail);
+export default memo(InfoDetail);
