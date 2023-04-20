@@ -5,7 +5,9 @@ import FieldLabel from 'component/field-label';
 import dayjs from 'dayjs';
 import { memo, useCallback } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { QUESTION_LEVEL, SUBJECT_DATA } from 'util/const';
+import { useRecoilValue } from 'recoil';
+import { subjectAtom } from 'state-management/subject';
+import { QUESTION_LEVEL } from 'util/const';
 import { useQueryDetailQuestion } from '../table/table.query';
 import BlogUi from './sub/blog-ui';
 
@@ -14,6 +16,8 @@ const BlogDetail = () => {
   const params = useParams();
   const { id } = params;
   const { isLoading: loadingDetail, data: infoDetail, error: errorDetail } = useQueryDetailQuestion(id);
+
+  const subjectData = useRecoilValue(subjectAtom);
 
   const onGoBack = useCallback(() => navigate(-1), [navigate]);
 
@@ -27,16 +31,10 @@ const BlogDetail = () => {
 
   const { created_date, updated_date, security, subjectId, level } = infoDetail;
 
-  const subject = SUBJECT_DATA.find((item) => item.value === subjectId);
+  const subject = subjectData.find((item) => item.id === subjectId) || '';
 
   return (
     <Flex direction="column" w={2 / 3} mx="auto" gap={10} my={10}>
-      {/* <Flex>
-        <Heading as="h3" fontSize={24}>
-          Tiêu đề: {title}
-        </Heading>
-      </Flex> */}
-
       <Flex mt={5} gap={1}>
         <FieldLabel title="Bảo mật" />
 

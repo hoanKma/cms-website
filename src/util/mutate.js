@@ -173,3 +173,26 @@ export const useMutationDeleteMedia = () => {
   );
   return { mutate, isLoading, error };
 };
+
+export const useMutationUploadImage = () => {
+  const { mutate, isLoading, error, data } = useMutation(
+    ({ file }) =>
+      API.upload({
+        file
+      })
+    // {
+    //   onSuccess: () => {
+    //     Toast.show({
+    //       content: 'Tải ảnh lên thành công',
+    //       status: 'success'
+    //     });
+    //   },
+    //   onError: () =>
+    //     Toast.show({
+    //       content: 'Tải ảnh lên thất bại',
+    //       status: 'error'
+    //     })
+    // }
+  );
+  return { mutate, isLoading, error, data };
+};

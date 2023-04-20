@@ -8,7 +8,6 @@ import { parse as parseHtml } from 'node-html-parser';
 
 const BlogUi = ({ infoDetail }) => {
   const { title = '', answers, explanation = 'Chưa có phần giải thích' } = infoDetail || {};
-  console.log('infoDetail', infoDetail);
 
   const rawHtml = parseHtml(title);
   const imgElements = rawHtml.querySelectorAll('img') || [];

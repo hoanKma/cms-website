@@ -65,39 +65,47 @@ class API {
   };
 
   upload = (config) => {
-    const { file, type, url } = config;
+    const { file } = config;
     if (!file) {
       return Promise.resolve(null);
     }
 
-    const urlUpload = url || `${process.env.REACT_APP_STOCKBOOK_CDN}/api/image_uploader?type=${type}`;
-    const formData = new FormData();
-    formData.append('file', file);
+    const token = localStorage.getItem(LS_KEY_SB_JWT);
+
     let newHeaders = {
       'content-type': 'multipart/form-data'
     };
-    if (this.accessToken) {
-      newHeaders.Authorization = `Bearer ${this.accessToken}`;
+
+    if (this.accessToken || token) {
+      newHeaders.Authorization = `Bearer ${this.accessToken || token}`;
     }
 
-    const configApi = {
-      headers: newHeaders
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const requestConfig = {
+      method: 'POST',
+      url: '/upload',
+      baseURL: process.env.REACT_APP_API,
+      headers: newHeaders,
+      timeout: 20000, //timeout error message 20s.
+      timeoutErrorMessage: 'Quá thời gian chờ dịch vụ'
     };
 
-    return axios
-      .post(urlUpload, formData, configApi)
-      .then((response) => response.data)
-      .catch((error) => {
-        if (error?.response?.status === 413) {
-          return Promise.reject(new Error('Lỗi: Kích thước file tải lên quá lớn'));
-        }
+    requestConfig.data = formData;
 
-        if (error?.response?.data) {
-          const { message } = error.response.data;
-          return Promise.reject(message ? new Error(message) : error);
+    return axios(requestConfig)
+      .then((response) => {
+        // console.log('API.Response:', response);
+
+        const { data, status, error } = response;
+
+        if (status !== 200 && status !== 201 && status !== 202) {
+          throw Error(error);
         }
-        return Promise.reject(error);
-      });
+        return data?.data;
+      })
+      .catch((error) => Promise.reject(error?.response?.data || error));
   };
 }
 

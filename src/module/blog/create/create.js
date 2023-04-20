@@ -96,6 +96,7 @@ const BlogCreate = () => {
             <Switch size="md" colorScheme="orange" isChecked={isHot} onChange={onChangeSwitch} />
           </Flex>
           <SelectCategory ref={categoryRef} />
+          {/* <SelectTopic ref={topic} */}
           <SelectLevel ref={levelRef} />
           <FieldContent ref={contentRef} />
           <FormRadioGroup />

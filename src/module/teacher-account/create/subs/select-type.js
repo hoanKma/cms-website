@@ -2,11 +2,14 @@ import { Flex, Text } from '@chakra-ui/react';
 import DropDownlist from 'base-component/drop-downlist';
 import FieldLabel from 'component/field-label';
 import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { SUBJECT_DATA } from 'util/const';
+import { useRecoilValue } from 'recoil';
+import { subjectAtom } from 'state-management/subject';
 
 const SelectType = forwardRef((_, ref) => {
   const [error, setError] = useState();
   const dropDownListRef = useRef();
+
+  const subject = useRecoilValue(subjectAtom);
 
   useEffect(() => {
     if (error) {
@@ -36,8 +39,7 @@ const SelectType = forwardRef((_, ref) => {
         isClearable={false}
         isSearchable={false}
         onError={onError}
-        options={SUBJECT_DATA}
-        // defaultValue={SUBJECT_DATA}
+        options={subject}
         isMulti={true}
         isRequired={true}
         onChange={onChange}

@@ -4,6 +4,9 @@ import isEmpty from 'lodash/isEmpty';
 import queryString from 'query-string';
 import { useCallback, useEffect, useState } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { subjectAtom } from 'state-management/subject';
+import { userInfoAtom } from 'state-management/user-info';
 import { getParentId, getUrlCdn } from 'util/helper';
 import { useMutationCreate, useMutationCreateMedia, useMutationDeleteMedia, useMutationUpdate } from 'util/mutate';
 import API from './api';
@@ -317,3 +320,36 @@ export const useGetParamsURL = () => {
 };
 
 export const useScrollTop = () => useEffect(() => window.scrollTo(0, 0), []);
+
+export const useSetUserInfo = (userInfo) => {
+  const setUserInfo = useSetRecoilState(userInfoAtom);
+
+  useEffect(() => {
+    if (userInfo) {
+      const { username, password, fullName, role, status, avatar, school, address, phone, gender } = userInfo;
+
+      setUserInfo({
+        username,
+        password,
+        fullName,
+        role,
+        status,
+        avatar,
+        school,
+        address,
+        phone,
+        gender
+      });
+    }
+  }, [setUserInfo, userInfo]);
+};
+
+export const useSetSubject = (subject) => {
+  const setSubject = useSetRecoilState(subjectAtom);
+
+  useEffect(() => {
+    if (subject) {
+      setSubject(subject);
+    }
+  }, [setSubject, subject]);
+};

@@ -5,7 +5,9 @@ import Pagination from 'component/pagination';
 import Table from 'component/table';
 import { memo, useEffect, useMemo, useRef } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { QUESTION_LEVEL, SUBJECT_DATA, TABLE_CONFIG } from 'util/const';
+import { useRecoilValue } from 'recoil';
+import { subjectAtom } from 'state-management/subject';
+import { QUESTION_LEVEL, TABLE_CONFIG } from 'util/const';
 import TableAction from './action';
 import { useQueryTableDataQuestion } from './table.query';
 
@@ -35,6 +37,8 @@ const BlogTable = memo(() => {
   const queryClient = useQueryClient();
   const location = useLocation();
 
+  const subject = useRecoilValue(subjectAtom);
+
   useEffect(() => data && tableRef.current?.setNewData(data), [data]);
   useEffect(() => {
     if (location) {
@@ -52,11 +56,12 @@ const BlogTable = memo(() => {
 
   const customRow = (field, data) => {
     if (field === 'subjectId') {
-      const subject = SUBJECT_DATA.find((item) => item.value === data);
-      return <Text>{subject.label}</Text>;
+      const subject123 = subject.find((item) => item.id === data) || {};
+
+      return <Text>{subject123?.label}</Text>;
     }
     if (field === 'level') {
-      return <Text>{QUESTION_LEVEL[data].label}</Text>;
+      return <Text>{QUESTION_LEVEL[data]?.label}</Text>;
     }
     if (field === 'title') {
       return <Text noOfLines={2} dangerouslySetInnerHTML={{ __html: data }} />;

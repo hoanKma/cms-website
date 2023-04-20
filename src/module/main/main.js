@@ -5,8 +5,16 @@ import MainMenu from 'layout/menu';
 import Section from 'layout/section';
 import { memo } from 'react';
 import { Outlet } from 'react-router-dom';
+import { useSetSubject, useSetUserInfo } from 'util/hook';
+import { useQuerySubject, useQueryUserInfo } from 'util/query';
 
 export default memo(() => {
+  const { data: userInfo } = useQueryUserInfo();
+  const { data: subject } = useQuerySubject();
+
+  useSetUserInfo(userInfo);
+  useSetSubject(subject);
+
   return (
     <Flex flexDirection="column">
       <Flex>

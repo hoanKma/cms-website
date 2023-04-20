@@ -58,3 +58,26 @@ export const useQueryMedia = (parentId) => {
 
   return { isLoading: isInitialLoading, data, error };
 };
+
+export const useQueryUserInfo = () => {
+  return useQuery(
+    ['USER_INFO'],
+    () =>
+      API.request({
+        url: '/user-info'
+      }).catch((e) => {
+        Toast.show(`Lỗi: ${e?.error?.msg || 'Không thể lấy thông tin cá nhân'}`);
+      }),
+    {
+      enabled: !!'nickname'
+    }
+  );
+};
+
+export const useQuerySubject = () => {
+  return useQuery(['SUBJECT'], () =>
+    API.request({
+      url: '/subjects'
+    })
+  );
+};

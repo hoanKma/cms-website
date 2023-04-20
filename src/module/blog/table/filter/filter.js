@@ -1,11 +1,14 @@
 import DropDownlist from 'base-component/drop-downlist';
 import { memo, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { SUBJECT_DATA } from 'util/const';
+import { useRecoilValue } from 'recoil';
+import { subjectAtom } from 'state-management/subject';
 
 const Filter = () => {
   const dropDownListRef = useRef();
   const navigate = useNavigate();
+
+  const subjectData = useRecoilValue(subjectAtom);
 
   const onChange = useCallback(
     ({ e }) => {
@@ -22,8 +25,8 @@ const Filter = () => {
       isClearable={false}
       isSearchable={false}
       isRequired
-      options={SUBJECT_DATA}
-      defaultValue={SUBJECT_DATA[8]}
+      options={subjectData}
+      defaultValue={subjectData[0]}
     />
   );
 };

@@ -5,10 +5,13 @@ import { useQueryUserInfo } from 'layout/header/query';
 import { memo } from 'react';
 import { IoMdCheckmarkCircle } from 'react-icons/io';
 import { Link } from 'react-router-dom';
-import { SUBJECT_DATA } from 'util/const';
+import { useRecoilValue } from 'recoil';
+import { subjectAtom } from 'state-management/subject';
 
 const InfoDetail = () => {
   const { data: userInfo, isLoading, isError } = useQueryUserInfo();
+
+  const subjectData = useRecoilValue(subjectAtom);
 
   if (isLoading) {
     return <LoadingScreen />;
@@ -63,11 +66,13 @@ const InfoDetail = () => {
         </Flex>
         <List spacing={3}>
           {subjectIds.map((item, index) => {
+            const subject123 = subjectData.find((element) => element.id === item) || {};
+
             return (
               <ListItem>
                 <ListIcon as={IoMdCheckmarkCircle} color="green.500" />
                 <Text as={'span'} key={index}>
-                  {SUBJECT_DATA[item - 1].label}
+                  {subject123.label}
                 </Text>
               </ListItem>
             );
