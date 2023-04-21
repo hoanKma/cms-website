@@ -64,7 +64,7 @@ class API {
       .catch((error) => Promise.reject(error?.response?.data || error));
   };
 
-  upload = (config) => {
+  upload = async (config) => {
     const { file } = config;
     if (!file) {
       return Promise.resolve(null);
@@ -89,23 +89,20 @@ class API {
       baseURL: process.env.REACT_APP_API,
       headers: newHeaders,
       timeout: 20000, //timeout error message 20s.
-      timeoutErrorMessage: 'Quá thời gian chờ dịch vụ'
+      timeoutErrorMessage: 'Quá thời gian chờ dịch vụ',
+      data: formData
     };
 
-    requestConfig.data = formData;
-
-    return axios(requestConfig)
-      .then((response) => {
-        // console.log('API.Response:', response);
-
-        const { data, status, error } = response;
-
-        if (status !== 200 && status !== 201 && status !== 202) {
-          throw Error(error);
-        }
-        return data?.data;
-      })
-      .catch((error) => Promise.reject(error?.response?.data || error));
+    try {
+      const response = await axios(requestConfig);
+      const { data, status, error } = response;
+      if (status !== 200 && status !== 201 && status !== 202) {
+        throw Error(error);
+      }
+      return data?.data;
+    } catch (error) {
+      throw error?.response?.data || error;
+    }
   };
 }
 

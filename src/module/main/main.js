@@ -3,7 +3,8 @@ import '@toast-ui/editor/dist/toastui-editor.css';
 import Header from 'layout/header';
 import MainMenu from 'layout/menu';
 import Section from 'layout/section';
-import { memo } from 'react';
+import { isEmpty } from 'lodash';
+import { memo, useMemo } from 'react';
 import { Outlet } from 'react-router-dom';
 import { useSetSubject, useSetUserInfo } from 'util/hook';
 import { useQuerySubject, useQueryUserInfo } from 'util/query';
@@ -12,8 +13,16 @@ export default memo(() => {
   const { data: userInfo } = useQueryUserInfo();
   const { data: subject } = useQuerySubject();
 
+  const { role, subjectIds } = userInfo || 'ADMIN';
+
+  const filterSubject = useMemo(() => {
+    if (!isEmpty(subject)) {
+      return subject.filter((item) => subjectIds.includes(item.id));
+    }
+  }, [subject, subjectIds]);
+
   useSetUserInfo(userInfo);
-  useSetSubject(subject);
+  useSetSubject(role === 'ADMIN' ? subject : filterSubject);
 
   return (
     <Flex flexDirection="column">

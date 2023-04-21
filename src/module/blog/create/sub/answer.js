@@ -1,38 +1,42 @@
-import { memo, useRef } from 'react';
+import { Box, Flex, Radio, RadioGroup, Slider, SliderFilledTrack, SliderThumb, SliderTrack } from '@chakra-ui/react';
+import { useState } from 'react';
 
-import { Flex } from '@chakra-ui/react';
-import RadioBoxGroup from 'base-component/radio-box-group';
-import FieldLabel from 'component/field-label/field-label';
+function RadioInputCharaka(props) {
+  const [value, setValue] = useState(props.defaultValue || '');
 
-const FormRadioGroup = memo(() => {
-  const radioRef = useRef();
+  const handleOptionChange = (event) => {
+    setValue(event.target.value);
+  };
 
-  const options = [
-    {
-      value: 'A',
-      text: 'A. Nhập mã'
-    },
-    {
-      value: 'B',
-      text: 'B. Nhập tên'
-    },
-    {
-      value: 'C',
-      text: 'C. Nhập mã'
-    },
-    {
-      value: 'D',
-      text: 'D. Nhập tên'
-    }
-  ];
+  const handleCharakaChange = (event) => {
+    setValue(event.target.value);
+  };
 
   return (
-    <Flex direction="column" mt={10}>
-      <FieldLabel title={'Đáp án'} isRequired />
-
-      <RadioBoxGroup options={options} selectedValue={options[0].value} ref={radioRef} direction={'column'} />
-    </Flex>
+    <Box>
+      <RadioGroup onChange={handleOptionChange} value={value}>
+        <Flex alignItems="center">
+          <Radio value={props.value} size="md">
+            {props.label}
+          </Radio>
+          <Slider
+            aria-label={props.label}
+            value={value}
+            min={props.min}
+            max={props.max}
+            onChange={handleCharakaChange}
+            ml={4}
+          >
+            <SliderTrack>
+              <SliderFilledTrack />
+            </SliderTrack>
+            <SliderThumb />
+          </Slider>
+          <Box ml={4}>{value}</Box>
+        </Flex>
+      </RadioGroup>
+    </Box>
   );
-});
+}
 
-export default FormRadioGroup;
+export default RadioInputCharaka;

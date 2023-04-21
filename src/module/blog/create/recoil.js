@@ -44,3 +44,8 @@ export const imagesHTMlListAtom = atom({
   key: 'imagesHTMLListAtom_Blog',
   default: []
 });
+
+export const currentSubjectCreateAtom = atom({
+  key: 'currentSubjectCreateAtom',
+  default: undefined
+});

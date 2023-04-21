@@ -2,12 +2,16 @@ import { Flex } from '@chakra-ui/react';
 import DropDownlist from 'base-component/drop-downlist';
 import FieldLabel from 'component/field-label';
 import { forwardRef, memo, useCallback, useImperativeHandle, useRef } from 'react';
+import { useRecoilValue } from 'recoil';
 import { useQueryTopicBySubject } from '../query';
+import { currentSubjectCreateAtom } from '../recoil';
 
 const SelectTopic = forwardRef(({ subjectId }, ref) => {
   const dropDownListRef = useRef();
 
-  const { data: topicData } = useQueryTopicBySubject(subjectId);
+  const currentSubjectCreate = useRecoilValue(currentSubjectCreateAtom);
+
+  const { data: topicData } = useQueryTopicBySubject(currentSubjectCreate);
 
   useImperativeHandle(ref, () => ({
     get: () => dropDownListRef.current.getValues(),
@@ -26,7 +30,7 @@ const SelectTopic = forwardRef(({ subjectId }, ref) => {
   // }
 
   return (
-    <Flex flexDirection="column" mt={2} zIndex={700}>
+    <Flex flexDirection="column" mt={5} zIndex={600}>
       <FieldLabel title="Chuyên đề" isRequired />
       <DropDownlist
         ref={dropDownListRef}
@@ -36,8 +40,10 @@ const SelectTopic = forwardRef(({ subjectId }, ref) => {
         isSearchable={false}
         isRequired={true}
         onChange={onChange}
-        options={subject}
-        defaultValue={subject[0]}
+        options={topicData}
+        defaultValue={topicData?.[0]}
+        valueKey="id"
+        labelKey="title"
       />
 
       {/* {!!error && (

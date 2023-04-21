@@ -38,7 +38,7 @@ const FieldContent = forwardRef((_, ref) => {
   }));
 
   return (
-    <Flex direction="column" mt={10}>
+    <Flex direction="column" mt={5}>
       <FieldLabel title={'Nội dung Câu hỏi'} isRequired />
 
       {typeof defaultHtml !== 'undefined' && (

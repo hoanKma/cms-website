@@ -5,6 +5,7 @@ import API from 'util/api';
 export const useQueryTableDataQuestion = () => {
   const location = useLocation();
   const { search } = location;
+
   return useQuery(['GET_TABLE_QUESTION', search], () => {
     return API.request({
       url: `/questions${search || '?page=1'}&size=10`

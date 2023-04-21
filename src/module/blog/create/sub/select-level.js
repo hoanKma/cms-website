@@ -22,7 +22,7 @@ const SelectCategory = forwardRef((_, ref) => {
   }, [setCategory]);
 
   return (
-    <Flex flexDirection="column" mt={5} zIndex={600}>
+    <Flex flexDirection="column" mt={5} zIndex={500}>
       <FieldLabel title="Cấp độ" isRequired />
       <DropDownlist
         ref={dropDownListRef}

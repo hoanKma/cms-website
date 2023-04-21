@@ -1,17 +1,26 @@
 import { Flex } from '@chakra-ui/react';
 import DropDownlist from 'base-component/drop-downlist';
 import FieldLabel from 'component/field-label';
-import { forwardRef, memo, useCallback, useImperativeHandle, useRef } from 'react';
+import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { subjectAtom } from 'state-management/subject';
-import { hasCategoryAtom } from '../recoil';
+import { currentSubjectCreateAtom } from '../recoil';
 
 const SelectCategory = forwardRef((_, ref) => {
   const dropDownListRef = useRef();
+  const firstTime = useRef(false);
 
   const subject = useRecoilValue(subjectAtom);
 
-  const setCategory = useSetRecoilState(hasCategoryAtom);
+  // const setCategory = useSetRecoilState(hasCategoryAtom);
+  const setCurrentSubjectCreate = useSetRecoilState(currentSubjectCreateAtom);
+
+  useEffect(() => {
+    if (!firstTime.current) {
+      setCurrentSubjectCreate(subject[0]?.id);
+      firstTime.current = true;
+    }
+  }, [setCurrentSubjectCreate, subject]);
 
   useImperativeHandle(ref, () => ({
     get: () => dropDownListRef.current.getValues(),
@@ -19,9 +28,12 @@ const SelectCategory = forwardRef((_, ref) => {
     set: (value) => dropDownListRef.current?.setValues(value)
   }));
 
-  const onChange = useCallback(() => {
-    setCategory(true);
-  }, [setCategory]);
+  const onChange = useCallback(
+    (element) => {
+      setCurrentSubjectCreate(element.e.id);
+    },
+    [setCurrentSubjectCreate]
+  );
 
   // if (id && isLoading) {
   //   return <LoadingScreen />;

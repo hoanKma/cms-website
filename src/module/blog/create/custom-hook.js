@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { useResetRecoilState } from 'recoil';
 import {
+  currentSubjectCreateAtom,
   errorContentAtom,
   errorImageAtom,
   errorTitleAtom,
@@ -20,6 +21,7 @@ export const useResetAtom = () => {
   const resetErrorContentAtom = useResetRecoilState(errorContentAtom);
   const resetErrorTitleAtom = useResetRecoilState(errorTitleAtom);
   const resetImagesHTMlListAtom = useResetRecoilState(imagesHTMlListAtom);
+  const resetCurrentSubjectCreate = useResetRecoilState(currentSubjectCreateAtom);
 
   return useCallback(() => {
     resetFileListAtom();
@@ -30,7 +32,9 @@ export const useResetAtom = () => {
     resetHasContentAtom();
     resetErrorContentAtom();
     resetImagesHTMlListAtom();
+    resetCurrentSubjectCreate();
   }, [
+    resetCurrentSubjectCreate,
     resetErrorContentAtom,
     resetErrorImageAtom,
     resetErrorTitleAtom,

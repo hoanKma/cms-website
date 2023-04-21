@@ -3,12 +3,15 @@ import { ButtonBack, ButtonSubmit } from 'component/button';
 import FieldLabel from 'component/field-label/field-label';
 import { memo, useCallback, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { userInfoAtom } from 'state-management/user-info';
 import { useMutationCreateQuestion } from './mutate';
-import FormRadioGroup from './sub/answer';
+import RadioInputCharaka from './sub/answer';
 import FieldContent from './sub/input-content';
 import InputExplan from './sub/input-explan';
 import SelectCategory from './sub/select-category';
 import SelectLevel from './sub/select-level';
+import SelectTopic from './sub/select-topic';
 
 const BlogCreate = () => {
   const params = useParams();
@@ -18,9 +21,14 @@ const BlogCreate = () => {
   const categoryRef = useRef();
   const levelRef = useRef();
   const explanRef = useRef();
+  const topicRef = useRef();
   const [isHot, setIsHot] = useState(false);
 
   const [disable, setDisable] = useState(false);
+
+  const userInfo = useRecoilValue(userInfoAtom);
+
+  const { id: teacherId } = userInfo;
 
   // const { data: dataItem, isLoading: loadingDetail, error } = useQueryDetailQuestion(id);
 
@@ -58,7 +66,7 @@ const BlogCreate = () => {
         subjectId,
         security: isHot,
         level,
-        teacherId: '641eef2cc2b3e0df73970ae4',
+        teacherId,
         answers: [
           { value: 'A', label: 'Hoan A', isCorrect: true },
           { value: 'B', label: 'Hoan B', isCorrect: false },
@@ -69,7 +77,7 @@ const BlogCreate = () => {
       };
       createQuestion(params);
     },
-    [createQuestion, isHot]
+    [createQuestion, isHot, teacherId]
   );
 
   const onChangeSwitch = useCallback((e) => {
@@ -87,19 +95,20 @@ const BlogCreate = () => {
   // }
 
   return (
-    <Flex mx="auto" mt={10}>
+    <Flex mx="auto" mt={5}>
       <form onSubmit={onSubmit}>
         <Flex w="700px" direction={'column'}>
-          <Flex mt={5} gap={1}>
+          <Flex gap={1}>
             <FieldLabel title={'Bảo mật câu hỏi'} />
 
             <Switch size="md" colorScheme="orange" isChecked={isHot} onChange={onChangeSwitch} />
           </Flex>
           <SelectCategory ref={categoryRef} />
-          {/* <SelectTopic ref={topic} */}
+          <SelectTopic ref={topicRef} />
           <SelectLevel ref={levelRef} />
           <FieldContent ref={contentRef} />
-          <FormRadioGroup />
+          {/* <FormRadioGroup /> */}
+          <RadioInputCharaka />
           <InputExplan ref={explanRef} />
           <Flex justifyContent="center" mt={16} mb={10} gap={8}>
             <ButtonBack onClick={onGoBack} />

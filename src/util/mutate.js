@@ -1,5 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Toast from 'base-component/toast';
+import { useCallback } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { loadingUploadImageAtom } from 'state-management/loading-upload-image';
 import API from 'util/api';
 
 export const useMutationDelete = (queryKey) => {
@@ -195,4 +198,30 @@ export const useMutationUploadImage = () => {
     // }
   );
   return { mutate, isLoading, error, data };
+};
+
+export const useUploadImage = () => {
+  const setLoading = useSetRecoilState(loadingUploadImageAtom);
+
+  return useCallback(
+    (blob, callback) => {
+      setLoading(true);
+      API.upload({
+        file: blob
+      })
+        .then((response) => {
+          setLoading(false);
+          callback(response.url, 'image');
+        })
+        .catch((e) => {
+          setLoading(false);
+          Toast.show({
+            content: 'Tải ảnh lên thất bại',
+            status: 'error'
+          });
+        });
+      return false;
+    },
+    [setLoading]
+  );
 };
