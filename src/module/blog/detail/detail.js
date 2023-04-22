@@ -29,7 +29,7 @@ const BlogDetail = () => {
     return <ErrorScreen message={errorDetail?.message} />;
   }
 
-  const { created_date, updated_date, security, subjectId, level } = infoDetail;
+  const { created_date, updated_date, security, subjectId, level, topicName } = infoDetail || {};
 
   const subject = subjectData.find((item) => item.id === subjectId) || '';
 
@@ -58,7 +58,7 @@ const BlogDetail = () => {
         </Flex>
         <Flex flex={1}>
           <Text as={'span'} fontWeight={700}>
-            {/* {subject.label} */}
+            {topicName}
           </Text>
         </Flex>
       </Flex>

@@ -43,6 +43,7 @@ const FieldAnswerB = forwardRef((_, ref) => {
   return (
     <Flex mt={5} gap={4}>
       <Checkbox
+        size={'lg'}
         colorScheme="green"
         isChecked={correctAnswer === answer}
         onChange={(e) => {
