@@ -67,6 +67,7 @@ const BlogCreate = () => {
 
       const subjectId = categoryRef?.current?.get()?.id;
       const level = levelRef?.current?.get()?.value;
+      const topicId = topicRef?.current?.get()?.id;
       const title = contentRef?.current?.getHtml();
       const explanation = explanRef?.current?.getHtml();
       const answerA = answerARef?.current?.getHtml();
@@ -81,6 +82,7 @@ const BlogCreate = () => {
         security: isHot,
         level,
         teacherId,
+        topicId,
         answers: [
           { value: 'A', label: answerA, isCorrect: correctAnswer === 1 ? true : false },
           { value: 'B', label: answerB, isCorrect: correctAnswer === 2 ? true : false },

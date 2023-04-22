@@ -69,7 +69,7 @@ const BlogDetail = () => {
         </Flex>
         <Flex flex={1}>
           <Text as={'span'} fontWeight={700}>
-            {QUESTION_LEVEL[level].label}
+            {QUESTION_LEVEL[level - 1]?.label}
           </Text>
         </Flex>
       </Flex>
