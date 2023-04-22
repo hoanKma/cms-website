@@ -6,7 +6,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { userInfoAtom } from 'state-management/user-info';
 import { useMutationCreateQuestion } from './mutate';
-import RadioInputCharaka from './sub/answer';
+import { correctAnswerAtom } from './recoil';
+import FieldAnswerA from './sub/field-answer-a';
+import FieldAnswerB from './sub/field-answer-b';
+import FieldAnswerC from './sub/field-answer-c';
+import FieldAnswerD from './sub/field-answer-d';
 import FieldContent from './sub/input-content';
 import InputExplan from './sub/input-explan';
 import SelectCategory from './sub/select-category';
@@ -22,11 +26,17 @@ const BlogCreate = () => {
   const levelRef = useRef();
   const explanRef = useRef();
   const topicRef = useRef();
+  const answerARef = useRef();
+  const answerBRef = useRef();
+  const answerCRef = useRef();
+  const answerDRef = useRef();
   const [isHot, setIsHot] = useState(false);
 
   const [disable, setDisable] = useState(false);
 
   const userInfo = useRecoilValue(userInfoAtom);
+  const correctAnswer = useRecoilValue(correctAnswerAtom);
+  console.log('correctAnswer', correctAnswer);
 
   const { id: teacherId } = userInfo;
 
@@ -55,10 +65,14 @@ const BlogCreate = () => {
     (e) => {
       e.preventDefault();
 
-      const subjectId = categoryRef?.current?.get()?.value;
+      const subjectId = categoryRef?.current?.get()?.id;
       const level = levelRef?.current?.get()?.value;
       const title = contentRef?.current?.getHtml();
       const explanation = explanRef?.current?.getHtml();
+      const answerA = answerARef?.current?.getHtml();
+      const answerB = answerBRef?.current?.getHtml();
+      const answerC = answerCRef?.current?.getHtml();
+      const answerD = answerDRef?.current?.getHtml();
 
       const params = {
         title,
@@ -68,16 +82,17 @@ const BlogCreate = () => {
         level,
         teacherId,
         answers: [
-          { value: 'A', label: 'Hoan A', isCorrect: true },
-          { value: 'B', label: 'Hoan B', isCorrect: false },
-          { value: 'C', label: 'Hoan C', isCorrect: false },
-          { value: 'D', label: 'Hoan D', isCorrect: false }
+          { value: 'A', label: answerA, isCorrect: correctAnswer === 1 ? true : false },
+          { value: 'B', label: answerB, isCorrect: correctAnswer === 2 ? true : false },
+          { value: 'C', label: answerC, isCorrect: correctAnswer === 3 ? true : false },
+          { value: 'D', label: answerD, isCorrect: correctAnswer === 4 ? true : false }
         ],
         status: 'ACTIVE'
       };
+
       createQuestion(params);
     },
-    [createQuestion, isHot, teacherId]
+    [correctAnswer, createQuestion, isHot, teacherId]
   );
 
   const onChangeSwitch = useCallback((e) => {
@@ -95,7 +110,7 @@ const BlogCreate = () => {
   // }
 
   return (
-    <Flex mx="auto" mt={5}>
+    <Flex mx="auto" mt={5} direction={'column'}>
       <form onSubmit={onSubmit}>
         <Flex w="700px" direction={'column'}>
           <Flex gap={1}>
@@ -107,8 +122,10 @@ const BlogCreate = () => {
           <SelectTopic ref={topicRef} />
           <SelectLevel ref={levelRef} />
           <FieldContent ref={contentRef} />
-          {/* <FormRadioGroup /> */}
-          <RadioInputCharaka />
+          <FieldAnswerA ref={answerARef} />
+          <FieldAnswerB ref={answerBRef} />
+          <FieldAnswerC ref={answerCRef} />
+          <FieldAnswerD ref={answerDRef} />
           <InputExplan ref={explanRef} />
           <Flex justifyContent="center" mt={16} mb={10} gap={8}>
             <ButtonBack onClick={onGoBack} />

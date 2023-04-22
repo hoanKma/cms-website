@@ -54,6 +54,17 @@ const BlogDetail = () => {
 
       <Flex>
         <Flex w="30%">
+          <Text fontWeight={500}> Chuyên đề: </Text>
+        </Flex>
+        <Flex flex={1}>
+          <Text as={'span'} fontWeight={700}>
+            {/* {subject.label} */}
+          </Text>
+        </Flex>
+      </Flex>
+
+      <Flex>
+        <Flex w="30%">
           <Text fontWeight={500}> Cấp độ: </Text>
         </Flex>
         <Flex flex={1}>

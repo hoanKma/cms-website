@@ -64,7 +64,7 @@ const BlogTable = memo(() => {
       return <Text>{QUESTION_LEVEL[data]?.label}</Text>;
     }
     if (field === 'title') {
-      return <Text noOfLines={2} dangerouslySetInnerHTML={{ __html: data }} />;
+      return <Text noOfLines={2} dangerouslySetInnerHTML={{ __html: data }} w={'500px'} />;
     }
   };
 

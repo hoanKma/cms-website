@@ -48,9 +48,9 @@
   border-radius: 1px;
 }
 
-.toastui-editor-defaultUI .toastui-editor-mode-switch {
+/* .toastui-editor-defaultUI .toastui-editor-mode-switch {
   display: none!important;
-}
+} */
 
 .toastui-editor-defaultUI .toastui-editor-main-container .toastui-editor-contents{
   font-family: 'Open Sans',sans-serif!important;

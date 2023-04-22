@@ -49,3 +49,8 @@ export const currentSubjectCreateAtom = atom({
   key: 'currentSubjectCreateAtom',
   default: undefined
 });
+
+export const correctAnswerAtom = atom({
+  key: 'correctAnswerAtom',
+  default: 1
+});
