@@ -18,7 +18,7 @@ class API {
   }
 
   request = (config) => {
-    const { method = 'GET', url, params, headers, baseURL = process.env.REACT_APP_API } = config;
+    const { method = 'GET', url, params, headers, baseURL = process.env.REACT_APP_API, getTotal } = config;
 
     // console.log('API.token:', this.accessToken);
     // console.log('API.Request:', `${baseURL}${url}`, params, method);
@@ -58,6 +58,9 @@ class API {
 
         if (status !== 200 && status !== 201 && status !== 202) {
           throw Error(error);
+        }
+        if (getTotal) {
+          return data;
         }
         return data?.data;
       })

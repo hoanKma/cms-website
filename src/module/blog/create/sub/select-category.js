@@ -1,26 +1,23 @@
 import { Flex } from '@chakra-ui/react';
 import DropDownlist from 'base-component/drop-downlist';
 import FieldLabel from 'component/field-label';
-import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { forwardRef, memo, useCallback, useImperativeHandle, useMemo, useRef } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { subjectAtom } from 'state-management/subject';
 import { currentSubjectCreateAtom } from '../recoil';
 
 const SelectCategory = forwardRef((_, ref) => {
   const dropDownListRef = useRef();
-  const firstTime = useRef(false);
 
   const subject = useRecoilValue(subjectAtom);
 
   // const setCategory = useSetRecoilState(hasCategoryAtom);
-  const setCurrentSubjectCreate = useSetRecoilState(currentSubjectCreateAtom);
+  const [currentSubjectCreate, setCurrentSubjectCreate] = useRecoilState(currentSubjectCreateAtom);
 
-  useEffect(() => {
-    if (!firstTime.current) {
-      setCurrentSubjectCreate(subject[0]?.id);
-      firstTime.current = true;
-    }
-  }, [setCurrentSubjectCreate, subject]);
+  const subject123 = useMemo(
+    () => subject.find((item) => item.id === currentSubjectCreate) || {},
+    [currentSubjectCreate, subject]
+  );
 
   useImperativeHandle(ref, () => ({
     get: () => dropDownListRef.current.getValues(),
@@ -55,7 +52,7 @@ const SelectCategory = forwardRef((_, ref) => {
         isRequired={true}
         onChange={onChange}
         options={subject}
-        defaultValue={subject[0]}
+        defaultValue={subject123}
       />
 
       {/* {!!error && (

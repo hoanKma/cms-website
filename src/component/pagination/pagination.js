@@ -15,7 +15,6 @@ const Pagination = () => {
     (page) => {
       setSearchParams((curr) => {
         const clone = paramsToObject(curr.entries());
-        console.log(page);
         return new URLSearchParams({ ...clone, page });
       });
     },

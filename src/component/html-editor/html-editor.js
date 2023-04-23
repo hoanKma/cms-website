@@ -4,7 +4,7 @@ import ClassicEditor from 'ckeditor5-build-classic-mathtype';
 import { LoadingScreen } from 'component/effect-screen';
 import parse from 'html-react-parser';
 
-import { forwardRef, memo, useCallback, useImperativeHandle, useRef, useState } from 'react';
+import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { loadingUploadImageAtom } from 'state-management/loading-upload-image';
 import { useUploadImage } from 'util/mutate';
@@ -32,6 +32,12 @@ const HtmlEditor = forwardRef((props, ref) => {
     // onChangeText && onChangeText(temp.textContent);
   }, []);
 
+  useEffect(() => {
+    if (defaultHtml) {
+      setContent(defaultHtml);
+    }
+  }, [defaultHtml]);
+
   useImperativeHandle(ref, () => ({
     getHtml: () => {
       if (!content) {
@@ -41,7 +47,9 @@ const HtmlEditor = forwardRef((props, ref) => {
       // return editorRef.current?.getInstance()?.getHTML();
     },
     setHtml: (value) => {
-      editorRef.current?.getInstance()?.setHTML(value);
+      editorRef?.current?.setHtml('<b>Inner</b> HTML');
+      // editorRef.current?.setHTML(value);
+      // editorRef.current?.getInstance()?.setHTML(value);
     },
     getContent: () => content
   }));

@@ -60,17 +60,12 @@ export const useQueryMedia = (parentId) => {
 };
 
 export const useQueryUserInfo = () => {
-  return useQuery(
-    ['USER_INFO'],
-    () =>
-      API.request({
-        url: '/user-info'
-      }).catch((e) => {
-        Toast.show(`Lỗi: ${e?.error?.msg || 'Không thể lấy thông tin cá nhân'}`);
-      }),
-    {
-      enabled: !!'nickname'
-    }
+  return useQuery(['USER_INFO'], () =>
+    API.request({
+      url: '/user-info'
+    }).catch((e) => {
+      Toast.show(`Lỗi: ${e?.error?.msg || 'Không thể lấy thông tin cá nhân'}`);
+    })
   );
 };
 

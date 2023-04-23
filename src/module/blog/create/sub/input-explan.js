@@ -39,7 +39,7 @@ const FieldContent = forwardRef((_, ref) => {
 
   return (
     <Flex direction="column" mt={10}>
-      <FieldLabel title={'Giải thích'} isRequired />
+      <FieldLabel title={'Giải thích'} />
 
       {typeof defaultHtml !== 'undefined' && (
         <HtmlEditor ref={editorRef} onChangeText={onChange} defaultHtml={defaultHtml} image />

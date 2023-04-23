@@ -14,7 +14,8 @@ export const useQueryTableDataQuestion = () => {
 
   return useQuery(['GET_TABLE_QUESTION', search], () => {
     return API.request({
-      url: `/questions${search || '?page=1'}&size=10&creatorId=${role === 'ADMIN' ? '' : id}`
+      url: `/questions${search || '?page=1'}&size=10&creatorId=${role === 'ADMIN' ? '' : id}`,
+      getTotal: true
     });
   });
 };

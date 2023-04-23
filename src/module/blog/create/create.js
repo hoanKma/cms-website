@@ -1,11 +1,16 @@
 import { Flex, Switch } from '@chakra-ui/react';
 import { ButtonBack, ButtonSubmit } from 'component/button';
+import { ErrorScreen, LoadingScreen } from 'component/effect-screen';
 import FieldLabel from 'component/field-label/field-label';
-import { memo, useCallback, useMemo, useRef, useState } from 'react';
+import { isEmpty } from 'lodash';
+import { useQueryDetailQuestion } from 'module/exam/table/table.query';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { subjectAtom } from 'state-management/subject';
 import { userInfoAtom } from 'state-management/user-info';
-import { useMutationCreateQuestion } from './mutate';
+import { QUESTION_LEVEL } from 'util/const';
+import { useMutationCreateQuestion, useMutationUpdateQuestion } from './mutate';
 import { correctAnswerAtom } from './recoil';
 import FieldAnswerA from './sub/field-answer-a';
 import FieldAnswerB from './sub/field-answer-b';
@@ -30,34 +35,64 @@ const BlogCreate = () => {
   const answerBRef = useRef();
   const answerCRef = useRef();
   const answerDRef = useRef();
-  const [isHot, setIsHot] = useState(false);
+  const [isSecurity, setSecurity] = useState(false);
 
   const [disable, setDisable] = useState(false);
 
   const userInfo = useRecoilValue(userInfoAtom);
-  const correctAnswer = useRecoilValue(correctAnswerAtom);
-  console.log('correctAnswer', correctAnswer);
+  const [correctAnswer, setCorrectAnswer] = useRecoilState(correctAnswerAtom);
+
+  const subject = useRecoilValue(subjectAtom);
 
   const { id: teacherId } = userInfo;
 
-  // const { data: dataItem, isLoading: loadingDetail, error } = useQueryDetailQuestion(id);
+  const { isLoading: loadingDetail, data: infoDetail, error: errorDetail } = useQueryDetailQuestion(id);
 
   const { mutate: createQuestion, isLoading: loadingCreate } = useMutationCreateQuestion();
+  const { mutate: updateQuestion, isLoading: loadingUpdate } = useMutationUpdateQuestion(id);
 
-  const loadingAction = useMemo(() => loadingCreate, [loadingCreate]);
+  const loadingAction = useMemo(() => loadingCreate || loadingUpdate, [loadingCreate, loadingUpdate]);
 
-  // useEffect(() => {
-  //     categoryRef?.current?.set(infoDetail);
-  // }, []);
+  useEffect(() => {
+    if (id && !isEmpty(infoDetail)) {
+      const { subjectId, level, topicTitle, topicId, isSecurity, title, explanation, answers } = infoDetail;
+      answers.map((element, index) => {
+        const { isCorrect, label, value } = element || {};
+        if (isCorrect) {
+          setCorrectAnswer(index + 1);
+        }
+        switch (value) {
+          case 'A':
+            answerARef.current.setHtml(label);
 
-  // useEffect(() => {
-  //   if (id && Array.isArray(dataItem) && dataItem.length > 0) {
-  //     const { title, description, is_hot, content } = dataItem[0];
-  //     titleRef.current?.set(title);
-  //     descriptionRef.current?.set(description);
-  //     contentRef.current.setHtml(content);
-  //   }
-  // }, [dataItem, id]);
+            break;
+          case 'B':
+            answerBRef.current.setHtml(label);
+
+            break;
+          case 'C':
+            answerCRef.current.setHtml(label);
+
+            break;
+          case 'D':
+            answerDRef.current.setHtml(label);
+
+            break;
+          default:
+            break;
+        }
+      });
+      contentRef.current.setHtml(title);
+      explanRef.current.setHtml(explanation);
+      setSecurity(isSecurity);
+
+      const subject123 = subject.find((item) => item.id === subjectId) || {};
+      categoryRef.current.set(subject123);
+
+      topicRef.current.set({ title: topicTitle, id: topicId });
+      levelRef.current.set(QUESTION_LEVEL[level - 1]);
+    }
+  }, [id, infoDetail, setCorrectAnswer, subject]);
 
   const onGoBack = useCallback(() => navigate(-1), [navigate]);
 
@@ -79,7 +114,7 @@ const BlogCreate = () => {
         title,
         explanation,
         subjectId,
-        security: isHot,
+        security: isSecurity,
         level,
         teacherId,
         topicId,
@@ -92,24 +127,28 @@ const BlogCreate = () => {
         status: 'ACTIVE'
       };
 
-      createQuestion(params);
+      if (id) {
+        updateQuestion(params);
+      } else {
+        createQuestion(params);
+      }
     },
-    [correctAnswer, createQuestion, isHot, teacherId]
+    [correctAnswer, createQuestion, id, isSecurity, teacherId, updateQuestion]
   );
 
   const onChangeSwitch = useCallback((e) => {
-    setIsHot(e.target.checked);
+    setSecurity(e.target.checked);
   }, []);
 
-  // if (id) {
-  //   if (loadingDetail) {
-  //     return <LoadingScreen />;
-  //   }
+  if (id) {
+    if (loadingDetail) {
+      return <LoadingScreen />;
+    }
 
-  //   if (error || !Array.isArray(dataItem) || dataItem.length < 1) {
-  //     return <ErrorScreen />;
-  //   }
-  // }
+    if (errorDetail || isEmpty(infoDetail)) {
+      return <ErrorScreen />;
+    }
+  }
 
   return (
     <Flex mx="auto" mt={5} direction={'column'}>
@@ -118,7 +157,7 @@ const BlogCreate = () => {
           <Flex gap={1}>
             <FieldLabel title={'Bảo mật câu hỏi'} />
 
-            <Switch size="md" colorScheme="orange" isChecked={isHot} onChange={onChangeSwitch} />
+            <Switch size="md" colorScheme="orange" isChecked={isSecurity} onChange={onChangeSwitch} />
           </Flex>
           <SelectCategory ref={categoryRef} />
           <SelectTopic ref={topicRef} />

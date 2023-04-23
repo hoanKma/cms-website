@@ -6,7 +6,7 @@ import { useRecoilValue } from 'recoil';
 import { useQueryTopicBySubject } from '../query';
 import { currentSubjectCreateAtom } from '../recoil';
 
-const SelectTopic = forwardRef(({ subjectId }, ref) => {
+const SelectTopic = forwardRef((_, ref) => {
   const dropDownListRef = useRef();
 
   const currentSubjectCreate = useRecoilValue(currentSubjectCreateAtom);

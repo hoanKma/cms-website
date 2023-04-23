@@ -33,7 +33,9 @@ const FieldContent = forwardRef((_, ref) => {
 
   useImperativeHandle(ref, () => ({
     getHtml: () => editorRef.current.getHtml(),
-    setHtml: (value) => setDefaultHtml(value || ''),
+    setHtml: (value) => {
+      setDefaultHtml(value || '');
+    },
     getContent: () => editorRef.current.getContent()
   }));
 

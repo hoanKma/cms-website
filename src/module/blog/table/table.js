@@ -5,9 +5,10 @@ import Pagination from 'component/pagination';
 import Table from 'component/table';
 import { memo, useEffect, useMemo, useRef } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { subjectAtom } from 'state-management/subject';
 import { QUESTION_LEVEL, TABLE_CONFIG } from 'util/const';
+import { currentSubjectCreateAtom } from '../create/recoil';
 import TableAction from './action';
 import { useQueryTableDataQuestion } from './table.query';
 
@@ -17,6 +18,10 @@ const BlogTable = memo(() => {
       {
         title: 'Môn',
         field: 'subjectId'
+      },
+      {
+        title: 'Chuyên đề',
+        field: 'topicTitle'
       },
       {
         title: 'Cấp độ',
@@ -37,9 +42,18 @@ const BlogTable = memo(() => {
   const queryClient = useQueryClient();
   const location = useLocation();
 
+  const setCurrentSubjectCreate = useSetRecoilState(currentSubjectCreateAtom);
+
+  const searchParams = new URLSearchParams(location?.search);
+  const subjectId = searchParams.get('subjectId');
+
+  useEffect(() => {
+    setCurrentSubjectCreate(subjectId);
+  }, [setCurrentSubjectCreate, subjectId]);
+
   const subject = useRecoilValue(subjectAtom);
 
-  useEffect(() => data && tableRef.current?.setNewData(data), [data]);
+  useEffect(() => data?.data && tableRef.current?.setNewData(data?.data), [data]);
   useEffect(() => {
     if (location) {
       return () => {
@@ -69,7 +83,8 @@ const BlogTable = memo(() => {
   };
 
   return (
-    <Flex direction="column" w="full">
+    <Flex direction="column" w="full" gap={4}>
+      <Text fontWeight={700}>Tổng số câu: {data?.pagination?.total}</Text>
       <Table
         header={header}
         name={page}
@@ -78,7 +93,11 @@ const BlogTable = memo(() => {
         config={TABLE_CONFIG}
         action={(item) => <TableAction id={item.id} />}
       />
-      <EffectScreen isLoading={isLoading} errorMsg={error?.message} isNoData={!Array.isArray(data) || !data.length} />
+      <EffectScreen
+        isLoading={isLoading}
+        errorMsg={error?.message}
+        isNoData={!Array.isArray(data?.data) || !data?.data.length}
+      />
       <Pagination />
     </Flex>
   );
