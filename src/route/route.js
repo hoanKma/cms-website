@@ -8,6 +8,7 @@ import Main from 'module/main';
 import TeacherAccountCreate from 'module/teacher-account/create';
 import TeacherAccountDetail from 'module/teacher-account/detail';
 import TeacherAccount from 'module/teacher-account/teacher-account';
+import Webview from 'module/webview/webview';
 import { memo, useEffect } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { LS_KEY_SB_JWT } from 'util/const';
@@ -46,6 +47,9 @@ const AppRoute = () => {
           <Route path="cap-nhat/:id" element={<BlogCreate />} />
           <Route path="chi-tiet/:id" element={<BlogDetail />} />
         </Route>
+      </Route>
+      <Route path="webview">
+        <Route path="" element={<Webview />} />
       </Route>
     </Routes>
   );
