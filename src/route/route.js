@@ -2,6 +2,7 @@ import Blog from 'module/blog';
 import BlogCreate from 'module/blog/create';
 import BlogDetail from 'module/blog/detail';
 import Home from 'module/demo/main';
+import ExamStructure from 'module/exam-structure/exam-structure';
 import InfoDetail from 'module/info';
 import { Login } from 'module/login-logout';
 import Main from 'module/main';
@@ -26,6 +27,8 @@ const AppRoute = () => {
   return (
     <Routes>
       <Route path="/dang-nhap" element={<Login />} />
+      <Route path="/cau-truc-de" element={<ExamStructure />} />
+
       <Route element={<Main />}>
         <Route index element={<Home />} />
 
