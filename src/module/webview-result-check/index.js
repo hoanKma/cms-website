@@ -1,1 +1,1 @@
-export { default } from './webview-result';
+export { default } from './webview-result-check';
