@@ -9,6 +9,7 @@ import Main from 'module/main';
 import TeacherAccountCreate from 'module/teacher-account/create';
 import TeacherAccountDetail from 'module/teacher-account/detail';
 import TeacherAccount from 'module/teacher-account/teacher-account';
+import WebviewResult from 'module/webview-result/webview-result';
 import Webview from 'module/webview/webview';
 import { memo, useEffect } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
@@ -53,6 +54,10 @@ const AppRoute = () => {
       </Route>
       <Route path="webview">
         <Route path="" element={<Webview />} />
+      </Route>
+
+      <Route path="webview-result">
+        <Route path="" element={<WebviewResult />} />
       </Route>
     </Routes>
   );

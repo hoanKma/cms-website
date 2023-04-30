@@ -1,4 +1,4 @@
-import { Flex, Link, Text } from '@chakra-ui/react';
+import { Flex, Heading, Link, Text } from '@chakra-ui/react';
 import { memo, useEffect } from 'react';
 // import renderHtml from 'react-html-parser';
 import { ErrorScreen, LoadingScreen } from 'component/effect-screen';
@@ -23,7 +23,7 @@ export default memo(() => {
     }
   }, [accessToken]);
 
-  const { title = '', answers } = infoDetail || {};
+  const { title = '', answers, explanation = 'Chưa có phần giải thích' } = infoDetail || {};
 
   const rawHtml = parseHtml(title);
   const imgElements = rawHtml.querySelectorAll('img') || [];
@@ -108,13 +108,21 @@ export default memo(() => {
       <Flex direction={'column'} gap={2}>
         {answers?.map((item, index) => {
           return (
-            <Flex key={index} gap={2}>
-              <Text>{item.value}.</Text>
-              <Text>{parse(item.label, options)}</Text>
+            <Flex key={index} gap={2} color={item.isCorrect && '#F6941F'}>
+              <Text fontWeight={item.isCorrect && 800}>{item.value}.</Text>
+              <Text fontWeight={item.isCorrect && 800}>{parse(item.label, options)}</Text>
             </Flex>
           );
         })}
       </Flex>
+      {explanation && (
+        <>
+          <Heading as="h3" fontSize={'22px'}>
+            Giải thích
+          </Heading>
+          {parse(explanation, options)}
+        </>
+      )}
     </Flex>
   );
 });
