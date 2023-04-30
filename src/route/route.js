@@ -9,6 +9,7 @@ import Main from 'module/main';
 import TeacherAccountCreate from 'module/teacher-account/create';
 import TeacherAccountDetail from 'module/teacher-account/detail';
 import TeacherAccount from 'module/teacher-account/teacher-account';
+import WebviewResultCheck from 'module/webview-result-check/webview-result-check';
 import WebviewResult from 'module/webview-result/webview-result';
 import Webview from 'module/webview/webview';
 import { memo, useEffect } from 'react';
@@ -52,13 +53,10 @@ const AppRoute = () => {
           <Route path="chi-tiet/:id" element={<BlogDetail />} />
         </Route>
       </Route>
-      <Route path="webview">
-        <Route path="" element={<Webview />} />
-      </Route>
 
-      <Route path="webview-result">
-        <Route path="" element={<WebviewResult />} />
-      </Route>
+      <Route path="webview" element={<Webview />} />
+      <Route path="webview-result" element={<WebviewResult />} />
+      <Route path="webview-result-check" element={<WebviewResultCheck />} />
     </Routes>
   );
 };
