@@ -6,11 +6,10 @@ import { memo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom/dist';
 import { LS_KEY_SB_JWT } from 'util/const';
 import { useQueryUserInfo } from '../query';
-import { useMutationLogOut } from './mutate';
 
 const UserInfo = () => {
   const navigate = useNavigate();
-  const { mutate: logout } = useMutationLogOut();
+  // const { mutate: logout } = useMutationLogOut();
 
   const { data: userInfo } = useQueryUserInfo();
 

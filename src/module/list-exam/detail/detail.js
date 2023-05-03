@@ -1,19 +1,22 @@
-import { Flex, Switch, Text } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import { ButtonBack } from 'component/button';
 import { ErrorScreen, LoadingScreen } from 'component/effect-screen';
 import FieldLabel from 'component/field-label';
 import dayjs from 'dayjs';
-import { memo, useCallback } from 'react';
+import { Fragment, memo, useCallback } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { QUESTION_LEVEL, SUBJECT_DATA } from 'util/const';
-import { useQueryDetailQuestion } from '../table/table.query';
+import { useRecoilValue } from 'recoil';
+import { subjectAtom } from 'state-management/subject';
+import { useQueryDetailExam } from '../table/table.query';
 import BlogUi from './sub/blog-ui';
 
-const BlogDetail = () => {
+const ExamDetail = () => {
   const navigate = useNavigate();
   const params = useParams();
   const { id } = params;
-  const { isLoading: loadingDetail, data: infoDetail, error: errorDetail } = useQueryDetailQuestion(id);
+  const { isLoading: loadingDetail, data: infoDetail, error: errorDetail } = useQueryDetailExam(id);
+
+  const subjectData = useRecoilValue(subjectAtom);
 
   const onGoBack = useCallback(() => navigate(-1), [navigate]);
 
@@ -25,24 +28,12 @@ const BlogDetail = () => {
     return <ErrorScreen message={errorDetail?.message} />;
   }
 
-  const { created_date, updated_date, security, subjectId, level } = infoDetail;
+  const { created_date, updated_date, subjectId, questionIds = [], title } = infoDetail || {};
 
-  const subject = SUBJECT_DATA.find((item) => item.value === subjectId);
+  const subject = subjectData.find((item) => item.id === subjectId) || '';
 
   return (
     <Flex direction="column" w={2 / 3} mx="auto" gap={10} my={10}>
-      {/* <Flex>
-        <Heading as="h3" fontSize={24}>
-          Tiêu đề: {title}
-        </Heading>
-      </Flex> */}
-
-      <Flex mt={5} gap={1}>
-        <FieldLabel title="Bảo mật" />
-
-        <Switch size="md" colorScheme="orange" isChecked={security} isReadOnly />
-      </Flex>
-
       <Flex>
         <Flex w="30%">
           <Text fontWeight={500}> Môn: </Text>
@@ -56,11 +47,11 @@ const BlogDetail = () => {
 
       <Flex>
         <Flex w="30%">
-          <Text fontWeight={500}> Cấp độ: </Text>
+          <Text fontWeight={500}> Tiêu đề: </Text>
         </Flex>
         <Flex flex={1}>
           <Text as={'span'} fontWeight={700}>
-            {QUESTION_LEVEL[level].label}
+            {title}
           </Text>
         </Flex>
       </Flex>
@@ -83,7 +74,18 @@ const BlogDetail = () => {
         </Flex>
       </Flex>
 
-      <BlogUi infoDetail={infoDetail} />
+      <Flex direction={'column'}>
+        <FieldLabel title="Đề thi" />
+        <Flex direction="column" border={'1px dashed #F7941D'} borderRadius="5px" padding={'10px'} gap={4}>
+          {questionIds.map((element, index) => {
+            return (
+              <Fragment key={index}>
+                <BlogUi questionId={element} index={index} />
+              </Fragment>
+            );
+          })}
+        </Flex>
+      </Flex>
 
       <Flex mt={10} align="center" gap={8}>
         <ButtonBack onClick={onGoBack} />
@@ -99,7 +101,7 @@ const BlogDetail = () => {
             _hover={{ bgColor: '#ec8609' }}
             _active={{ bgColor: '#ec8609' }}
           >
-            Cập nhật câu hỏi
+            Cập nhật đề thi
           </Text>
         </Link>
       </Flex>
@@ -107,4 +109,4 @@ const BlogDetail = () => {
   );
 };
 
-export default memo(BlogDetail);
+export default memo(ExamDetail);

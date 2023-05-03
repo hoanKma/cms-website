@@ -5,7 +5,7 @@ import { memo, useCallback, useEffect } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { paramsToObject } from 'util/helper';
 import { useResetAtom } from './create/custom-hook';
-import BlogTable from './table';
+import ListExamTable from './table';
 import Filter from './table/filter';
 
 const Blog = () => {
@@ -37,7 +37,7 @@ const Blog = () => {
       <TableControl onSearch={onChangeSearch} createRoute="tao-moi" defaultSearchValue={title}></TableControl>
 
       <Flex mt={10} w="full">
-        <BlogTable />
+        <ListExamTable />
       </Flex>
     </Flex>
   );

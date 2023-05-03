@@ -56,7 +56,24 @@ export const MENU_DATA = [
   {
     title: 'Đề thi',
     icon: FaImages,
-    route: '/exam'
+    route: '/de-thi'
+  },
+
+  {
+    title: 'Chi tiết Đề thi',
+    route: '/de-thi/chi-tiet',
+    hiddenMenu: true
+  },
+
+  {
+    title: 'Tạo mới Đề thi',
+    route: '/de-thi/tao-moi',
+    hiddenMenu: true
+  },
+  {
+    title: 'Cập nhật Đề thi',
+    route: '/de-thi/cap-nhat',
+    hiddenMenu: true
   }
 ];
 
@@ -105,7 +122,23 @@ export const MENU_DATA_TEACHER = [
   {
     title: 'Đề thi',
     icon: FaImages,
-    route: '/exam'
+    route: '/de-thi'
+  },
+  {
+    title: 'Chi tiết Đề thi',
+    route: '/de-thi/chi-tiet',
+    hiddenMenu: true
+  },
+
+  {
+    title: 'Tạo mới Đề thi',
+    route: '/de-thi/tao-moi',
+    hiddenMenu: true
+  },
+  {
+    title: 'Cập nhật Đề thi',
+    route: '/de-thi/cap-nhat',
+    hiddenMenu: true
   }
 ];
 

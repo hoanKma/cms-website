@@ -21,14 +21,6 @@ const SelectTopic = forwardRef((_, ref) => {
 
   const onChange = useCallback(() => {}, []);
 
-  // if (id && isLoading) {
-  //   return <LoadingScreen />;
-  // }
-
-  // if (id && !data) {
-  //   return <ErrorScreen />;
-  // }
-
   return (
     <Flex flexDirection="column" mt={5} zIndex={600}>
       <FieldLabel title="Chuyên đề" isRequired />
@@ -45,12 +37,6 @@ const SelectTopic = forwardRef((_, ref) => {
         valueKey="id"
         labelKey="title"
       />
-
-      {/* {!!error && (
-        <Text color="red" mt={0.5}>
-          {error}
-        </Text>
-      )} */}
     </Flex>
   );
 });

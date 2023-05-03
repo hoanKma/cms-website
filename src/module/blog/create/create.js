@@ -3,13 +3,13 @@ import { ButtonBack, ButtonSubmit } from 'component/button';
 import { ErrorScreen, LoadingScreen } from 'component/effect-screen';
 import FieldLabel from 'component/field-label/field-label';
 import { isEmpty } from 'lodash';
-import { useQueryDetailQuestion } from 'module/exam/table/table.query';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { subjectAtom } from 'state-management/subject';
 import { userInfoAtom } from 'state-management/user-info';
 import { QUESTION_LEVEL } from 'util/const';
+import { useQueryDetailQuestion } from '../table/table.query';
 import { useMutationCreateQuestion, useMutationUpdateQuestion } from './mutate';
 import { correctAnswerAtom } from './recoil';
 import FieldAnswerA from './sub/field-answer-a';
@@ -37,7 +37,7 @@ const BlogCreate = () => {
   const answerDRef = useRef();
   const [isSecurity, setSecurity] = useState(false);
 
-  const [disable, setDisable] = useState(false);
+  // const [disable, setDisable] = useState(false);
 
   const userInfo = useRecoilValue(userInfoAtom);
   const [correctAnswer, setCorrectAnswer] = useRecoilState(correctAnswerAtom);
@@ -64,22 +64,18 @@ const BlogCreate = () => {
         switch (value) {
           case 'A':
             answerARef.current.setHtml(label);
-
-            break;
+            return null;
           case 'B':
             answerBRef.current.setHtml(label);
-
-            break;
+            return null;
           case 'C':
             answerCRef.current.setHtml(label);
-
-            break;
+            return null;
           case 'D':
             answerDRef.current.setHtml(label);
-
-            break;
+            return null;
           default:
-            break;
+            return null;
         }
       });
       contentRef.current.setHtml(title);
@@ -171,7 +167,8 @@ const BlogCreate = () => {
           <Flex justifyContent="center" mt={16} mb={10} gap={8}>
             <ButtonBack onClick={onGoBack} />
 
-            <ButtonSubmit title={id ? 'Cập nhật' : 'Tạo mới'} isLoading={loadingAction} isDisabled={disable} />
+            <ButtonSubmit title={id ? 'Cập nhật' : 'Tạo mới'} isLoading={loadingAction} />
+            {/* <ButtonSubmit title={id ? 'Cập nhật' : 'Tạo mới'} isLoading={loadingAction} isDisabled={disable} /> */}
           </Flex>
         </Flex>
       </form>

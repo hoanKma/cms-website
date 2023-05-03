@@ -54,13 +54,6 @@ const BlogTable = memo(() => {
   const subject = useRecoilValue(subjectAtom);
 
   useEffect(() => data?.data && tableRef.current?.setNewData(data?.data), [data]);
-  useEffect(() => {
-    if (location) {
-      return () => {
-        queryClient.removeQueries(['GET_TABLE_BLOG']);
-      };
-    }
-  }, [location, queryClient]);
 
   useEffect(() => {
     return () => {

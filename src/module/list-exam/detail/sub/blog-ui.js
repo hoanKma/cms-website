@@ -1,13 +1,28 @@
-import { Flex, Heading, Link, Text } from '@chakra-ui/react';
-import FieldLabel from 'component/field-label';
+import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
+  Box,
+  Flex,
+  Heading,
+  Link,
+  Text
+} from '@chakra-ui/react';
 import { memo } from 'react';
 // import renderHtml from 'react-html-parser';
+import { ButtonEdit } from 'component/button';
 import { AdvancedImgTag } from 'component/transform-html/transform-html.tag';
 import parse, { domToReact } from 'html-react-parser';
+import { useQueryDetailQuestion } from 'module/blog/table/table.query';
 import { parse as parseHtml } from 'node-html-parser';
+import { Link as LinkRoute } from 'react-router-dom';
 
-const BlogUi = ({ infoDetail }) => {
-  const { title = '', answers, explanation = 'Chưa có phần giải thích' } = infoDetail || {};
+const BlogUi = ({ questionId, index }) => {
+  const { data: infoDetail } = useQueryDetailQuestion(questionId);
+
+  const { title = '', answers, explanation } = infoDetail || {};
 
   const rawHtml = parseHtml(title);
   const imgElements = rawHtml.querySelectorAll('img') || [];
@@ -79,29 +94,34 @@ const BlogUi = ({ infoDetail }) => {
   };
 
   return (
-    <Flex direction={'column'}>
-      <FieldLabel title="Giao diện Câu hỏi" />
-
-      <Flex direction="column" border={'1px dashed #F7941D'} borderRadius="5px" padding={'10px'} gap={4}>
-        <Heading as="h3" fontSize={'22px'}>
-          Câu hỏi
+    <Flex direction={'column'} padding={'10px'} border={'1px dashed green'} borderRadius={'10px'}>
+      <Flex justifyContent={'space-between'}>
+        <Heading as="h4" fontSize={'16px'}>
+          Câu {index + 1}
         </Heading>
-
-        {parse(title, options)}
-        {answers?.map((item, index) => {
-          return (
-            <Flex key={index} gap={4} color={item.isCorrect && '#F6941F'}>
-              <Text fontWeight={item.isCorrect && 800}>{item.value}.</Text>
-              <Text fontWeight={item.isCorrect && 800}>{parse(item.label, options)}</Text>
-            </Flex>
-          );
-        })}
-
-        <Heading as="h3" fontSize={'22px'}>
-          Giải thích
-        </Heading>
-        {parse(explanation, options)}
+        <LinkRoute to={`../../cau-hoi/chi-tiet/${questionId}`} target="_blank">
+          <ButtonEdit />
+        </LinkRoute>
       </Flex>
+      {parse(title, options)}
+
+      {answers?.map((item, index) => {
+        return (
+          <Flex key={index} gap={4} color={item.isCorrect && '#F6941F'}>
+            <Text fontWeight={item.isCorrect && 800}>{item.value}.</Text>
+            <Text fontWeight={item.isCorrect && 800}>{parse(item.label, options)}</Text>
+          </Flex>
+        );
+      })}
+      <Accordion allowMultiple marginTop={4}>
+        <AccordionItem>
+          <AccordionButton>
+            <Box flex="1">Xem giải thích</Box>
+            <AccordionIcon />
+          </AccordionButton>
+          <AccordionPanel pb={4}>{parse(explanation || 'Chưa có giải thích', options)}</AccordionPanel>
+        </AccordionItem>
+      </Accordion>
     </Flex>
   );
 };

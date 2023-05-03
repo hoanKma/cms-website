@@ -3,10 +3,10 @@ import { ButtonEdit, ButtonView } from 'component/button';
 import DeleteConfirmButton from 'component/delete-confirm-button';
 import { memo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { useMutationDeleteQuestion } from './mutate';
+import { useMutationDeleteExam } from './mutate';
 
-const TableAction = ({ id }) => {
-  const { isLoading, mutate: deleteQuestion } = useMutationDeleteQuestion();
+const TableAction = ({ id, item }) => {
+  const { isLoading, mutate: deleteQuestion } = useMutationDeleteExam();
 
   const onDelete = useCallback(() => deleteQuestion(id), [deleteQuestion, id]);
 

@@ -4,6 +4,9 @@ import BlogDetail from 'module/blog/detail';
 import Home from 'module/demo/main';
 import ExamStructure from 'module/exam-structure/exam-structure';
 import InfoDetail from 'module/info';
+import ListExam from 'module/list-exam';
+import ExamCreate from 'module/list-exam/create';
+import ExamDetail from 'module/list-exam/detail';
 import { Login } from 'module/login-logout';
 import Main from 'module/main';
 import TeacherAccountCreate from 'module/teacher-account/create';
@@ -51,6 +54,13 @@ const AppRoute = () => {
           <Route path="tao-moi" element={<BlogCreate />} />
           <Route path="cap-nhat/:id" element={<BlogCreate />} />
           <Route path="chi-tiet/:id" element={<BlogDetail />} />
+        </Route>
+
+        <Route path="de-thi">
+          <Route path="" element={<ListExam />} />
+          <Route path="tao-moi" element={<ExamCreate />} />
+          <Route path="cap-nhat/:id" element={<BlogCreate />} />
+          <Route path="chi-tiet/:id" element={<ExamDetail />} />
         </Route>
       </Route>
 

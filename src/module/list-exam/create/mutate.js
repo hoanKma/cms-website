@@ -25,3 +25,26 @@ export const useMutationCreateQuestion = () => {
   );
   return { mutate, isLoading, error };
 };
+
+export const useMutationUpdateQuestion = (id) => {
+  const navigate = useNavigate();
+  const { mutate, isLoading, error } = useMutation(
+    (params) =>
+      API.request({
+        method: 'PATCH',
+        url: `/questions/${id}`,
+        params
+      }),
+    {
+      onSuccess: () => {
+        Toast.show({
+          content: 'Cập nhật câu hỏi thành công!',
+          status: 'success'
+        });
+        navigate(`../chi-tiet/${id}`);
+      },
+      onError: () => Toast.show({ content: 'Cập nhật câu hỏi thất bại', status: 'error' })
+    }
+  );
+  return { mutate, isLoading, error };
+};

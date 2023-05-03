@@ -4,31 +4,27 @@ import { useRecoilValue } from 'recoil';
 import { userInfoAtom } from 'state-management/user-info';
 import API from 'util/api';
 
-export const useQueryTableDataQuestion = () => {
+export const useQueryTableDataListExam = () => {
   const location = useLocation();
   const { search } = location;
-
   const userInfo = useRecoilValue(userInfoAtom);
 
-  const { role, id } = userInfo || {};
+  const creatorId = userInfo?.id !== '641eef0821477ff3d7a94724' && `&creatorId=${userInfo?.id}`;
 
-  return useQuery(['GET_TABLE_QUESTION', search], () => {
+  return useQuery(['GET_TABLE_LIST_EXAM', search], () => {
     return API.request({
-      url: `/questions${search || '?page=1'}&size=10&creatorId=${role === 'ADMIN' ? '' : id}`,
-      params: {
-        sort: 'createdAt asc'
-      },
+      url: `/exams${search || '?page=1'}&size=10${creatorId}`,
       getTotal: true
     });
   });
 };
 
-export const useQueryDetailQuestion = (id) => {
+export const useQueryDetailExam = (id) => {
   return useQuery(
-    ['GET_DETAIL_QUESTION', id],
+    ['GET_DETAIL_EXAM', id],
     () => {
       return API.request({
-        url: `/questions/${id}`
+        url: `/exams/${id}`
       });
     },
     { enabled: !!id }
