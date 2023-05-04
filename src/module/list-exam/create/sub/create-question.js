@@ -1,15 +1,23 @@
-import { Button, Flex, Text } from '@chakra-ui/react';
+import { Button, Flex } from '@chakra-ui/react';
 import FieldLabel from 'component/field-label';
-import { memo, useEffect, useState } from 'react';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { useRecoilState } from 'recoil';
-import { questionIdInCreateExamAtom } from '../recoil';
-import Card from './card';
+import { memo, useEffect, useMemo } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { subjectAtom } from 'state-management/subject';
+import { currentSubjectCreateAtom, questionIdInCreateExamAtom } from '../recoil';
+import ChangeOrderQuestion from './change-order-question';
 
 const CreateQuestion = () => {
+  const subject = useRecoilValue(subjectAtom);
+
   const [questionIdInCreate, setQuestionIdInCreate] = useRecoilState(questionIdInCreateExamAtom);
-  console.log('questionIdInCreate', questionIdInCreate.length);
+
+  const currentSubjectCreate = useRecoilValue(currentSubjectCreateAtom);
+
+  const subject123 = useMemo(
+    () => subject.find((item) => item.id === currentSubjectCreate) || {},
+    [currentSubjectCreate, subject]
+  );
+
   useEffect(() => {
     setQuestionIdInCreate([
       '644568da4d0d87ce91a433d8',
@@ -65,69 +73,13 @@ const CreateQuestion = () => {
     ]);
   }, [setQuestionIdInCreate]);
 
-  const [cards, setCards] = useState([
-    {
-      id: 1,
-      text: 'JavaScript'
-    },
-    {
-      id: 2,
-      text: 'Python'
-    },
-    {
-      id: 3,
-      text: 'Go'
-    },
-    {
-      id: 4,
-      text: 'Java'
-    },
-    {
-      id: 5,
-      text: 'Ruby'
-    },
-    {
-      id: 6,
-      text: 'C++'
-    }
-  ]);
-
-  const handleDrag = (dragIndex, hoverIndex) => {
-    setCards((prev) => {
-      const copy = [...prev];
-      const card = copy[dragIndex];
-      // remove origin
-      copy.splice(dragIndex, 1);
-      // add to target
-      copy.splice(hoverIndex, 0, card);
-      return copy;
-    });
-  };
-
   return (
-    <DndProvider backend={HTML5Backend}>
-      <Flex flexDirection="column" mt={5}>
-        <FieldLabel title="Danh sách câu hỏi" isRequired />
-        <Button>Thêm câu hỏi</Button>
+    <Flex flexDirection="column" my={5}>
+      <FieldLabel title="Danh sách câu hỏi" isRequired />
+      {questionIdInCreate.length < subject123?.questionNumber && <Button my={5}>Thêm câu hỏi</Button>}
 
-        <Text my={5} textDecoration={'underline'}>
-          Kéo thả câu hỏi để thay đổi vị trí
-        </Text>
-        {/* <Flex direction="column" border={'1px dashed #F7941D'} borderRadius="5px" padding={'10px'} gap={4}>
-        {questionIdInCreate.map((element, index) => {
-          return (
-            <Fragment key={index}>
-              <ExamUi questionId={element} index={index} />
-            </Fragment>
-          );
-        })}
-      </Flex> */}
-
-        {cards.map((item, index) => (
-          <Card key={item.id} index={index} text={item.text} handleDrag={handleDrag} state={cards} />
-        ))}
-      </Flex>
-    </DndProvider>
+      <ChangeOrderQuestion questionList={questionIdInCreate} />
+    </Flex>
   );
 };
 

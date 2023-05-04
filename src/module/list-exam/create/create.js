@@ -11,6 +11,7 @@ import { useQueryDetailExam } from '../table/table.query';
 import { useMutationCreateQuestion, useMutationUpdateQuestion } from './mutate';
 import CreateQuestion from './sub/create-question';
 import FieldTitle from './sub/input-title';
+import PublishDate from './sub/publish-date';
 import SelectCategory from './sub/select-category';
 
 const ExamCreate = () => {
@@ -19,6 +20,7 @@ const ExamCreate = () => {
   const navigate = useNavigate();
   const categoryRef = useRef();
   const titleRef = useRef();
+  const publishAtRef = useRef();
   // const [disable, setDisable] = useState(false);
 
   const userInfo = useRecoilValue(userInfoAtom);
@@ -36,11 +38,12 @@ const ExamCreate = () => {
 
   useEffect(() => {
     if (id && !isEmpty(infoDetail)) {
-      const { subjectId, title } = infoDetail;
+      const { subjectId, title, publishAt } = infoDetail;
 
       titleRef.current.setHtml(title);
       const subject123 = subject.find((item) => item.id === subjectId) || {};
       categoryRef.current.set(subject123);
+      publishAtRef.current.set(publishAt);
     }
   }, [id, infoDetail, subject]);
 
@@ -52,11 +55,14 @@ const ExamCreate = () => {
 
       const subjectId = categoryRef?.current?.get()?.id;
       const title = titleRef.current.get();
+      const publishAt = publishAtRef.current.get();
 
       const params = {
         title,
         subjectId,
         creatorId: teacherId,
+        // questionIds,
+        publishAt,
         status: 'ACTIVE'
       };
 
@@ -84,8 +90,8 @@ const ExamCreate = () => {
       <form onSubmit={onSubmit}>
         <Flex w="700px" direction={'column'}>
           <SelectCategory ref={categoryRef} />
-
           <FieldTitle ref={titleRef} />
+          <PublishDate />
           <CreateQuestion />
           <Flex justifyContent="center" mt={16} mb={10} gap={8}>
             <ButtonBack onClick={onGoBack} />

@@ -104,7 +104,7 @@ const ExamUi = ({ questionId, index }) => {
   }, [questionId, setQuestionIdInCreate]);
 
   return (
-    <Flex direction={'column'} padding={'10px'} border={'1px dashed green'} borderRadius={'10px'}>
+    <Flex direction={'column'} padding={'10px'} border={'1px dashed green'} borderRadius={'10px'} width={'full'}>
       <Flex justifyContent={'space-between'}>
         <Heading as="h4" fontSize={'16px'}>
           Câu {index + 1}

@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker';
 import { checkValue, convertTimestamp } from '../helper';
 import CustomInput from './custom-input';
 
-const Date = forwardRef(
+const DateComponent = forwardRef(
   (
     {
       name,
@@ -17,7 +17,10 @@ const Date = forwardRef(
       onChange,
       customValidate,
       onError,
-      isRequired
+      isRequired,
+      isDisabled,
+      minDate,
+      maxDate
     },
     ref
   ) => {
@@ -41,6 +44,7 @@ const Date = forwardRef(
     }));
 
     const [selected, setSelected] = useState(defaultValue);
+
     const timestamp = useMemo(() => {
       return convertTimestamp(selected);
     }, [selected]);
@@ -80,6 +84,29 @@ const Date = forwardRef(
       }
       checkValidate();
     }, [checkValidate]);
+    if (!isHours) {
+      return (
+        <DatePicker
+          locale={vn}
+          dropdownMode="select"
+          peekNextMonth
+          showMonthDropdown
+          showYearDropdown
+          customInput={<CustomInput error={errorMessage} isDisabled={isDisabled} />}
+          placeholderText={placeHolder}
+          name={name}
+          dateFormat={dateFormat}
+          showTimeSelect={isHours}
+          isClearable={isClearable}
+          selectsRange={isRangeDate}
+          onChange={onChangeDatepicker}
+          selected={selected}
+          disabled={isDisabled}
+          minDate={minDate}
+          maxDate={maxDate}
+        />
+      );
+    }
 
     return (
       <DatePicker
@@ -88,18 +115,22 @@ const Date = forwardRef(
         peekNextMonth
         showMonthDropdown
         showYearDropdown
-        customInput={<CustomInput error={errorMessage} />}
+        customInput={<CustomInput error={errorMessage} isDisabled={isDisabled} />}
         placeholderText={placeHolder}
         name={name}
-        dateFormat={dateFormat}
-        showTimeSelect={isHours}
         isClearable={isClearable}
         selectsRange={isRangeDate}
         onChange={onChangeDatepicker}
         selected={selected}
+        disabled={isDisabled}
+        timeInputLabel="Time:"
+        dateFormat="MM/dd/yyyy HH:mm"
+        showTimeInput
+        minDate={minDate}
+        maxDate={maxDate}
       />
     );
   }
 );
 
-export default memo(Date);
+export default memo(DateComponent);
