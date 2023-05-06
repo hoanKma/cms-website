@@ -24,7 +24,7 @@ const Blog = () => {
     (keyword) => {
       setSearchParams((curr) => {
         const clone = paramsToObject(curr.entries());
-        return new URLSearchParams({ ...clone, title: keyword });
+        return new URLSearchParams({ ...clone, keyword });
       });
     },
     [setSearchParams]

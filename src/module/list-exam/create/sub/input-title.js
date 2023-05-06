@@ -16,12 +16,12 @@ const FieldTitle = forwardRef((_, ref) => {
   const onError = useCallback((error) => setError(error), []);
 
   const onChange = useCallback((e) => {
-    // const value = e.target.value.trim();
+    const value = e.target.value.trim();
     // if (id) {
     //   setDisableSubmit(!value);
     // }
     // setHasTitle(!!value);
-    // setError((prev) => (value ? '' : prev));
+    setError((prev) => (value ? '' : prev));
   }, []);
 
   useImperativeHandle(ref, () => ({

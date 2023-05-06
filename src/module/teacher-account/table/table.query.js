@@ -8,10 +8,12 @@ export const useQueryTableDataTeacherAccount = () => {
   return useQuery(['GET_TABLE_TEACHER_ACCOUNT', search], () => {
     return API.request({
       url: `/users${search || '?page=1'}&size=10`,
-
       params: {
-        role: 'TEACHER'
-      }
+        role: 'TEACHER',
+
+        sort: 'updatedAt desc'
+      },
+      getTotal: true
     });
   });
 };

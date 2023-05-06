@@ -16,7 +16,7 @@ export const useQueryTableDataQuestion = () => {
     return API.request({
       url: `/questions${search || '?page=1'}&size=10&creatorId=${role === 'ADMIN' ? '' : id}`,
       params: {
-        sort: 'createdAt asc'
+        sort: 'updatedAt desc'
       },
       getTotal: true
     });

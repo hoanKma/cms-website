@@ -14,6 +14,9 @@ export const useQueryTableDataListExam = () => {
   return useQuery(['GET_TABLE_LIST_EXAM', search], () => {
     return API.request({
       url: `/exams${search || '?page=1'}&size=10${creatorId}`,
+      params: {
+        sort: 'updatedAt desc'
+      },
       getTotal: true
     });
   });

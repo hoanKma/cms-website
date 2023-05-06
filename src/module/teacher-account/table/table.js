@@ -19,7 +19,9 @@ const TeacherAccountTable = memo(() => {
   const { page } = params;
   const tableHeader = useMemo(() => getTableHeader(page), [page]);
 
-  useEffect(() => data && tableRef.current?.setNewData(data), [data]);
+  useEffect(() => data?.data && tableRef.current?.setNewData(data?.data), [data]);
+
+  const maxPage = useMemo(() => Math.ceil(data?.pagination?.total / 10), [data?.pagination?.total]);
 
   const customRow = (field, data) => {
     if (field === 'url') {
@@ -30,7 +32,7 @@ const TeacherAccountTable = memo(() => {
       );
     }
 
-    if (field === 'created_date') {
+    if (field === 'createdAt') {
       return <Text>{dayjs(data).format('DD/MM/YYYY - HH:mm')}</Text>;
     }
     if (field === 'fileNum') {
@@ -46,7 +48,9 @@ const TeacherAccountTable = memo(() => {
   };
 
   return (
-    <Flex direction="column" w="full">
+    <Flex direction="column" w="full" gap={4}>
+      <Text fontWeight={700}>Tổng số giáo viên: {data?.pagination?.total}</Text>
+
       <Table
         header={tableHeader}
         name={page}
@@ -55,8 +59,13 @@ const TeacherAccountTable = memo(() => {
         config={TABLE_CONFIG}
         action={(item) => <TableAction id={item.id} />}
       />
-      <EffectScreen isLoading={isLoading} errorMsg={error?.message} isNoData={!Array.isArray(data) || !data.length} />
-      <Pagination />
+      <EffectScreen
+        isLoading={isLoading}
+        errorMsg={error?.message}
+        isNoData={!Array.isArray(data?.data) || !data?.data.length}
+      />
+
+      <Pagination maxPage={maxPage || 1} />
     </Flex>
   );
 });

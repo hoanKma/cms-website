@@ -12,7 +12,7 @@ import {
   Link,
   Text
 } from '@chakra-ui/react';
-import { memo, useCallback } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 // import renderHtml from 'react-html-parser';
 import { ButtonEdit } from 'component/button';
 import { AdvancedImgTag } from 'component/transform-html/transform-html.tag';
@@ -21,12 +21,12 @@ import { useQueryDetailQuestion } from 'module/blog/table/table.query';
 import { parse as parseHtml } from 'node-html-parser';
 import { FaTimes } from 'react-icons/fa';
 import { Link as LinkRoute } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { questionIdInCreateExamAtom } from '../recoil';
 
 const ExamUi = ({ questionId, index }) => {
   const { data: infoDetail } = useQueryDetailQuestion(questionId);
-  const setQuestionIdInCreate = useSetRecoilState(questionIdInCreateExamAtom);
+  const [questionIdInCreate, setQuestionIdInCreate] = useRecoilState(questionIdInCreateExamAtom);
 
   const { title = '', answers, explanation } = infoDetail || {};
 
@@ -103,11 +103,16 @@ const ExamUi = ({ questionId, index }) => {
     setQuestionIdInCreate((prevState) => prevState.filter((id) => id !== questionId));
   }, [questionId, setQuestionIdInCreate]);
 
+  const getIndex = useMemo(
+    () => questionIdInCreate.findIndex((element) => element === questionId),
+    [questionId, questionIdInCreate]
+  );
+
   return (
     <Flex direction={'column'} padding={'10px'} border={'1px dashed green'} borderRadius={'10px'} width={'full'}>
       <Flex justifyContent={'space-between'}>
         <Heading as="h4" fontSize={'16px'}>
-          Câu {index + 1}
+          Câu {getIndex + 1}
         </Heading>
         <Flex gap={4}>
           <LinkRoute to={`../../cau-hoi/chi-tiet/${questionId}`} target="_blank">

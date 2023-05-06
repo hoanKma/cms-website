@@ -28,7 +28,7 @@ const ExamDetail = () => {
     return <ErrorScreen message={errorDetail?.message} />;
   }
 
-  const { created_date, updated_date, subjectId, questionIds = [], title } = infoDetail || {};
+  const { createdAt, updatedAt, publishAt, subjectId, questionIds = [], title } = infoDetail || {};
 
   const subject = subjectData.find((item) => item.id === subjectId) || '';
 
@@ -61,7 +61,7 @@ const ExamDetail = () => {
           <Text fontWeight={500}> Ngày tạo: </Text>
         </Flex>
         <Flex flex={1}>
-          <Text as={'span'}>{dayjs(created_date).format('DD/MM/YYYY - HH:mm')}</Text>
+          <Text as={'span'}>{dayjs(createdAt).format('DD/MM/YYYY - HH:mm')}</Text>
         </Flex>
       </Flex>
 
@@ -70,7 +70,16 @@ const ExamDetail = () => {
           <Text fontWeight={500}> Ngày cập nhật: </Text>
         </Flex>
         <Flex flex={1}>
-          <Text as={'span'}> {updated_date ? dayjs(updated_date).format('DD/MM/YYYY - HH:mm') : '___'}</Text>
+          <Text as={'span'}> {updatedAt ? dayjs(updatedAt).format('DD/MM/YYYY - HH:mm') : '___'}</Text>
+        </Flex>
+      </Flex>
+
+      <Flex>
+        <Flex w="30%">
+          <Text fontWeight={500}> Thời gian xuất bản: </Text>
+        </Flex>
+        <Flex flex={1}>
+          <Text as={'span'}> {publishAt ? dayjs(publishAt).format('DD/MM/YYYY - HH:mm') : '___'}</Text>
         </Flex>
       </Flex>
 

@@ -4,11 +4,12 @@ import { ErrorScreen, LoadingScreen } from 'component/effect-screen';
 import { isEmpty } from 'lodash';
 import { memo, useCallback, useEffect, useMemo, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { subjectAtom } from 'state-management/subject';
 import { userInfoAtom } from 'state-management/user-info';
 import { useQueryDetailExam } from '../table/table.query';
-import { useMutationCreateQuestion, useMutationUpdateQuestion } from './mutate';
+import { useMutationCreateExam, useMutationUpdateQuestion } from './mutate';
+import { currentSubjectCreateAtom, questionIdInCreateExamAtom } from './recoil';
 import CreateQuestion from './sub/create-question';
 import FieldTitle from './sub/input-title';
 import PublishDate from './sub/publish-date';
@@ -27,11 +28,15 @@ const ExamCreate = () => {
 
   const subject = useRecoilValue(subjectAtom);
 
+  const setCurrentSubjectCreate = useSetRecoilState(currentSubjectCreateAtom);
+
+  const questionIdInCreate = useRecoilValue(questionIdInCreateExamAtom);
+
   const { id: teacherId } = userInfo;
 
   const { isLoading: loadingDetail, data: infoDetail, error: errorDetail } = useQueryDetailExam(id);
 
-  const { mutate: createQuestion, isLoading: loadingCreate } = useMutationCreateQuestion();
+  const { mutate: createExam, isLoading: loadingCreate } = useMutationCreateExam();
   const { mutate: updateQuestion, isLoading: loadingUpdate } = useMutationUpdateQuestion(id);
 
   const loadingAction = useMemo(() => loadingCreate || loadingUpdate, [loadingCreate, loadingUpdate]);
@@ -47,6 +52,13 @@ const ExamCreate = () => {
     }
   }, [id, infoDetail, subject]);
 
+  useEffect(() => {
+    if (!id) {
+      setCurrentSubjectCreate(subject[0]?.id);
+      categoryRef.current.set(subject[0]);
+    }
+  }, [id, setCurrentSubjectCreate, subject]);
+
   const onGoBack = useCallback(() => navigate(-1), [navigate]);
 
   const onSubmit = useCallback(
@@ -61,7 +73,7 @@ const ExamCreate = () => {
         title,
         subjectId,
         creatorId: teacherId,
-        // questionIds,
+        questionIds: questionIdInCreate,
         publishAt,
         status: 'ACTIVE'
       };
@@ -69,10 +81,10 @@ const ExamCreate = () => {
       if (id) {
         // updateQuestion(params);
       } else {
-        // createQuestion(params);
+        createExam(params);
       }
     },
-    [id, teacherId]
+    [createExam, id, questionIdInCreate, teacherId]
   );
 
   if (id) {
@@ -91,7 +103,7 @@ const ExamCreate = () => {
         <Flex w="700px" direction={'column'}>
           <SelectCategory ref={categoryRef} />
           <FieldTitle ref={titleRef} />
-          <PublishDate />
+          <PublishDate ref={publishAtRef} />
           <CreateQuestion />
           <Flex justifyContent="center" mt={16} mb={10} gap={8}>
             <ButtonBack onClick={onGoBack} />

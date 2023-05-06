@@ -3,24 +3,24 @@ import Toast from 'base-component/toast';
 import { useNavigate } from 'react-router-dom';
 import API from 'util/api';
 
-export const useMutationCreateQuestion = () => {
+export const useMutationCreateExam = () => {
   const navigate = useNavigate();
   const { mutate, isLoading, error } = useMutation(
     (params) =>
       API.request({
         method: 'POST',
-        url: '/questions',
+        url: '/exams',
         params
       }),
     {
       onSuccess: () => {
         Toast.show({
-          content: 'Tạo câu hỏi thành công!',
+          content: 'Tạo đề thành công!',
           status: 'success'
         });
-        navigate('/cau-hoi');
+        navigate('/de-thi');
       },
-      onError: () => Toast.show({ content: 'Tạo câu hỏi thất bại', status: 'error' })
+      onError: () => Toast.show({ content: 'Tạo đề thất bại', status: 'error' })
     }
   );
   return { mutate, isLoading, error };

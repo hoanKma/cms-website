@@ -52,7 +52,6 @@ const SelectCategory = forwardRef((_, ref) => {
         isRequired={true}
         onChange={onChange}
         options={subject}
-        // defaultValue={subject[0]}
       />
       <Flex justify={'center'} mt={5}>
         <Text>

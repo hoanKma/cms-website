@@ -50,6 +50,8 @@ const ListExamTable = memo(() => {
     }
   }, [location, queryClient]);
 
+  const maxPage = useMemo(() => Math.ceil(data?.pagination?.total / 10), [data?.pagination?.total]);
+
   const customRow = (field, data) => {
     if (field === 'numOfUse') {
       return <Text textAlign={'center'}>{data}</Text>;
@@ -69,14 +71,14 @@ const ListExamTable = memo(() => {
         ref={tableRef}
         customRow={customRow}
         config={TABLE_CONFIG}
-        action={(item) => <TableAction id={item._id} item={item} />}
+        action={(item) => <TableAction id={item.id} item={item} />}
       />
       <EffectScreen
         isLoading={isLoading}
         errorMsg={error?.message}
         isNoData={!Array.isArray(data?.data) || !data?.data.length}
       />
-      <Pagination />
+      <Pagination maxPage={maxPage || 1} />
     </Flex>
   );
 });

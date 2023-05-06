@@ -8,12 +8,3 @@ export const useQueryTopicBySubject = (subjectId) => {
     });
   });
 };
-
-export const useQueryDetailQuestions = (ids) => {
-  const idString = ids.join(',');
-  return useQuery(['GET_DETAIL_QUESTIONS', idString], () => {
-    return API.request({
-      url: `/questions?size=100&ids=${idString}`
-    });
-  });
-};

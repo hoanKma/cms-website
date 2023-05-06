@@ -4,7 +4,7 @@ import { memo } from 'react';
 import { useRecoilValue } from 'recoil';
 
 export default memo((props) => {
-  const { name, action } = props;
+  const { name, action, titleAction } = props;
   const header = useRecoilValue(cmsTableHeader(name));
   const config = useRecoilValue(cmsTableConfig(name));
 
@@ -35,7 +35,7 @@ export default memo((props) => {
         })}
         {action && (
           <Th fontSize={headerTextSize} textColor={headerTextColor}>
-            Hành động
+            {titleAction || 'Hành động'}
           </Th>
         )}
       </Tr>

@@ -8,7 +8,7 @@ import Body from './sub/body';
 import Header from './sub/header';
 
 const TableComponent = forwardRef((props, ref) => {
-  const { header: newHeader, rowKey, config: moreConfig, action, customRow, name } = props;
+  const { header: newHeader, rowKey, config: moreConfig, action, customRow, name, titleAction } = props;
   const [header, setHeader] = useRecoilState(cmsTableHeader(name));
   const [data, setData] = useRecoilState(cmsTableData(name));
   const resetData = useResetRecoilState(cmsTableData(name));
@@ -55,7 +55,7 @@ const TableComponent = forwardRef((props, ref) => {
 
   return (
     <Table variant="unstyled" w="full">
-      <Header name={name} action={action} />
+      <Header name={name} action={action} titleAction={titleAction} />
       <Body rowKey={rowKey} action={action} customRow={customRow} name={name} />
     </Table>
   );

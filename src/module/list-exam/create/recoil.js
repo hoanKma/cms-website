@@ -9,3 +9,8 @@ export const questionIdInCreateExamAtom = atom({
   key: 'questionIdInCreateExamAtomKey',
   default: []
 });
+
+export const questionIdInCreateExamAtomQueue = atom({
+  key: 'questionIdInCreateExamAtomQueue',
+  default: []
+});

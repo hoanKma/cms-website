@@ -5,7 +5,7 @@ import { memo, useCallback } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { paramsToObject } from 'util/helper';
 
-const Pagination = () => {
+const Pagination = ({ maxPage }) => {
   const location = useLocation();
   const parsed = queryString.parse(location.search);
   const { page = 1 } = parsed;
@@ -23,7 +23,7 @@ const Pagination = () => {
 
   return (
     <Flex mt={10} justifyContent="flex-end">
-      <LoadMorePaging defaultValue={parseInt(page)} onChange={onChangePage} />
+      <LoadMorePaging defaultValue={parseInt(page)} onChange={onChangePage} maxPage={maxPage} />
     </Flex>
   );
 };

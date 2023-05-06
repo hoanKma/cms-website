@@ -21,6 +21,8 @@ const ChangeOrderQuestion = () => {
     [questionIdInCreate, setQuestionIdInCreate]
   );
 
+  if (!questionIdInCreate.length) return;
+
   return (
     <Flex direction={'column'} gap={4}>
       <Text fontWeight={500}>Thứ tự hiển thị câu hỏi (Kéo thả để thay đổi vị trí)</Text>
@@ -47,7 +49,7 @@ const ChangeOrderQuestion = () => {
                         align="center"
                         gap={5}
                       >
-                        <ExamUi questionId={element} index={index} />
+                        <ExamUi questionId={element} />
                       </Flex>
                     )}
                   </Draggable>

@@ -1,10 +1,10 @@
 import { Flex, Text } from '@chakra-ui/react';
 import Menu from 'component/menu';
 import { useQueryUserInfo } from 'layout/header/query';
-import preval from 'preval.macro';
 import { memo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MAIN_COLOR } from 'util/const';
+import packageJson from '../../../package.json';
 import { MENU_DATA, MENU_DATA_TEACHER } from './subs/data';
 import MenuHeader from './subs/menu-header';
 
@@ -54,10 +54,7 @@ export const MainMenu = memo(() => {
       </Flex>
       <Flex pos="fixed" bottom={0} left={0} px={5} py={3} w="280px" justify="center">
         <Text color="#808080" fontSize={13}>
-          Version:{' '}
-          {process.env.REACT_APP_PROD === 'false' && (
-            <> - {preval`module.exports = new Date().toLocaleString("vi-VN");`}</>
-          )}
+          {`Phiên bản ${packageJson.version}`}
         </Text>
       </Flex>
     </Flex>
