@@ -1,7 +1,7 @@
 import { Flex, Text } from '@chakra-ui/react';
 import DropDownlist from 'base-component/drop-downlist';
 import TableControl from 'component/table-control';
-import { memo, useCallback, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { QUESTION_LEVEL } from 'util/const';
 import { paramsToObject } from 'util/helper';
@@ -10,11 +10,20 @@ import SubAddQuestionTable from './sub-add-question/table';
 
 const ModalAddQuestion = ({ currentSubjectCreate }) => {
   const { data: topicData } = useQueryTopicBySubject(currentSubjectCreate);
+  const firstTime = useRef(false);
 
   const setSearchParams = useSearchParams()[1];
 
   const [level, setLevel] = useState(0);
   const [topicId, setTopicId] = useState();
+
+  useEffect(() => {
+    if (!firstTime.current) {
+      firstTime.current = true;
+      setSearchParams('');
+      return;
+    }
+  }, [setSearchParams]);
 
   const onChangeSearch = useCallback(
     (keyword) => {
