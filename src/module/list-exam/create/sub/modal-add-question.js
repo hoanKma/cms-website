@@ -1,15 +1,30 @@
 import { Flex, Text } from '@chakra-ui/react';
 import DropDownlist from 'base-component/drop-downlist';
-import { memo, useState } from 'react';
+import TableControl from 'component/table-control';
+import { memo, useCallback, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { QUESTION_LEVEL } from 'util/const';
+import { paramsToObject } from 'util/helper';
 import { useQueryTopicBySubject } from '../query';
 import SubAddQuestionTable from './sub-add-question/table';
 
 const ModalAddQuestion = ({ currentSubjectCreate }) => {
   const { data: topicData } = useQueryTopicBySubject(currentSubjectCreate);
 
+  const setSearchParams = useSearchParams()[1];
+
   const [level, setLevel] = useState(0);
   const [topicId, setTopicId] = useState();
+
+  const onChangeSearch = useCallback(
+    (keyword) => {
+      setSearchParams((curr) => {
+        const clone = paramsToObject(curr.entries());
+        return new URLSearchParams({ ...clone, keyword });
+      });
+    },
+    [setSearchParams]
+  );
 
   return (
     <Flex flexDirection="column" my={5}>
@@ -41,6 +56,13 @@ const ModalAddQuestion = ({ currentSubjectCreate }) => {
         onChange={(item) => setLevel(item.e.value)}
         options={QUESTION_LEVEL}
       />
+      <Flex flexDirection={'column'}>
+        <Text fontWeight={700} my={2}>
+          Nhập từ khoá
+        </Text>
+        <TableControl onSearch={onChangeSearch} action={false}></TableControl>
+      </Flex>
+
       <Flex w="full" mt={2}>
         <SubAddQuestionTable level={level} topicId={topicId} />
       </Flex>

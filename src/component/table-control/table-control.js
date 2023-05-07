@@ -6,7 +6,7 @@ import { FaTimes } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 const TableControl = (props) => {
-  const { children, createRoute, onSearch, disableSearch, defaultSearchValue, MoreAction } = props;
+  const { children, createRoute, onSearch, disableSearch, defaultSearchValue, MoreAction, action = true } = props;
   const [keyword, setKeyword] = useState(defaultSearchValue);
   const inputSearchRef = useRef();
 
@@ -70,13 +70,14 @@ const TableControl = (props) => {
             </>
           )}
         </Flex>
-
-        <Flex gap={6}>
-          {!!MoreAction && MoreAction}
-          <Link to={createRoute}>
-            <ButtonCreate />
-          </Link>
-        </Flex>
+        {action && (
+          <Flex gap={6}>
+            {!!MoreAction && MoreAction}
+            <Link to={createRoute}>
+              <ButtonCreate />
+            </Link>
+          </Flex>
+        )}
       </Flex>
       <Flex flexWrap="wrap" mt={5}>
         {children}
