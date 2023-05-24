@@ -8,7 +8,10 @@ const HeatmapChart = () => {
 
   return (
     <Flex direction={'column'}>
-      <Text textAlign={'center'}> Biểu đồ câu hỏi tạo mới theo ngày</Text>
+      <Text textAlign={'center'} fontSize={24} fontWeight={800} paddingY={4}>
+        Biểu đồ câu hỏi tạo mới theo ngày
+      </Text>
+      <Text textAlign={'center'}>{'(Dữ liệu 30 ngày gần nhất)'}</Text>
       <LineChart
         width={1000}
         height={300}
@@ -27,7 +30,11 @@ const HeatmapChart = () => {
         <Legend />
         <Line type="monotone" dataKey="count" stroke="#8884d8" activeDot={{ r: 8 }} />
       </LineChart>
-      <Text textAlign={'center'}> Biểu đồ đề thi tạo mới theo ngày</Text>
+      <Text textAlign={'center'} fontSize={24} fontWeight={800} paddingY={4}>
+        {' '}
+        Biểu đồ đề thi tạo mới theo ngày
+      </Text>
+      <Text textAlign={'center'}>{'(Dữ liệu 30 ngày gần nhất)'}</Text>
 
       <LineChart
         width={1000}
@@ -47,6 +54,8 @@ const HeatmapChart = () => {
         <Legend />
         <Line type="monotone" dataKey="count" stroke="#8884d8" activeDot={{ r: 8 }} />
       </LineChart>
+
+      {/* <DataTable data={examsGetByDate} /> */}
     </Flex>
   );
 };

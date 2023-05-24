@@ -1,8 +1,14 @@
 import { Flex, Icon, Text } from '@chakra-ui/react';
 import { FaChalkboardTeacher, FaFileAlt, FaLeanpub, FaUserGraduate } from 'react-icons/fa';
+import { useRecoilValue } from 'recoil';
+import { userInfoAtom } from 'state-management/user-info';
 import { useQueryGetCountExam, useQueryGetCountQuestion, useQueryGetCountUser } from '../query';
 import HeatmapChart from './heatmap-chart';
 const StatisticScreen = () => {
+  const userInfo = useRecoilValue(userInfoAtom);
+
+  const { role, followers } = userInfo || {};
+
   const { data: countTeacher } = useQueryGetCountUser('TEACHER');
   const { data: countUser } = useQueryGetCountUser('STUDENT');
   const { data: countQuestion } = useQueryGetCountQuestion();
@@ -10,31 +16,47 @@ const StatisticScreen = () => {
 
   return (
     <Flex gap={8} flexWrap={'wrap'}>
-      <Flex border={'1px solid green'} borderRadius={10} direction={'column'}>
-        <Flex h={2} bg={'green'} borderTopLeftRadius={10} borderTopRightRadius={10}></Flex>
-        <Flex direction={'column'} padding={4} gap={2}>
-          <Icon as={FaUserGraduate} color="green" boxSize={16} />
-          <Text fontSize={'28px'} fontWeight={700} color={'green'}>
-            Tổng số học sinh
-          </Text>
-          <Text fontSize={'28px'} fontWeight={700}>
-            {countUser?.count}
-          </Text>
+      {role === 'ADMIN' ? (
+        <Flex border={'1px solid green'} borderRadius={10} direction={'column'}>
+          <Flex h={2} bg={'green'} borderTopLeftRadius={10} borderTopRightRadius={10}></Flex>
+          <Flex direction={'column'} padding={4} gap={2}>
+            <Icon as={FaUserGraduate} color="green" boxSize={16} />
+            <Text fontSize={'28px'} fontWeight={700} color={'green'}>
+              Tổng số học sinh
+            </Text>
+            <Text fontSize={'28px'} fontWeight={700}>
+              {countUser?.count}
+            </Text>
+          </Flex>
         </Flex>
-      </Flex>
-
-      <Flex border={'1px solid orange'} borderRadius={10} direction={'column'}>
-        <Flex h={2} bg={'orange'} borderTopLeftRadius={10} borderTopRightRadius={10}></Flex>
-        <Flex direction={'column'} padding={4} gap={2}>
-          <Icon as={FaChalkboardTeacher} color="orange" boxSize={16} />
-          <Text fontSize={'28px'} fontWeight={700} color={'orange'}>
-            Tổng số giáo viên
-          </Text>
-          <Text fontSize={'28px'} fontWeight={700}>
-            {countTeacher?.count}
-          </Text>
+      ) : (
+        <Flex border={'1px solid green'} borderRadius={10} direction={'column'}>
+          <Flex h={2} bg={'green'} borderTopLeftRadius={10} borderTopRightRadius={10}></Flex>
+          <Flex direction={'column'} padding={4} gap={2}>
+            <Icon as={FaUserGraduate} color="green" boxSize={16} />
+            <Text fontSize={'28px'} fontWeight={700} color={'green'}>
+              Tổng số học sinh theo dõi
+            </Text>
+            <Text fontSize={'28px'} fontWeight={700}>
+              {followers?.length}
+            </Text>
+          </Flex>
         </Flex>
-      </Flex>
+      )}
+      {role === 'ADMIN' && (
+        <Flex border={'1px solid orange'} borderRadius={10} direction={'column'}>
+          <Flex h={2} bg={'orange'} borderTopLeftRadius={10} borderTopRightRadius={10}></Flex>
+          <Flex direction={'column'} padding={4} gap={2}>
+            <Icon as={FaChalkboardTeacher} color="orange" boxSize={16} />
+            <Text fontSize={'28px'} fontWeight={700} color={'orange'}>
+              Tổng số giáo viên
+            </Text>
+            <Text fontSize={'28px'} fontWeight={700}>
+              {countTeacher?.count}
+            </Text>
+          </Flex>
+        </Flex>
+      )}
 
       <Flex border={'1px solid purple'} borderRadius={10} direction={'column'}>
         <Flex h={2} bg={'purple'} borderTopLeftRadius={10} borderTopRightRadius={10}></Flex>

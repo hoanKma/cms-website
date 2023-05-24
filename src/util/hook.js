@@ -326,7 +326,22 @@ export const useSetUserInfo = (userInfo) => {
 
   useEffect(() => {
     if (userInfo) {
-      const { id, username, password, fullName, role, status, avatar, school, address, phone, gender } = userInfo;
+      const {
+        id,
+        username,
+        password,
+        fullName,
+        role,
+        status,
+        avatar,
+        school,
+        address,
+        phone,
+        gender,
+        followers,
+        following,
+        numOfExam
+      } = userInfo;
 
       setUserInfo({
         id,
@@ -339,7 +354,10 @@ export const useSetUserInfo = (userInfo) => {
         school,
         address,
         phone,
-        gender
+        gender,
+        followers,
+        following,
+        numOfExam
       });
     }
   }, [setUserInfo, userInfo]);

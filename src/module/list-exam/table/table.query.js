@@ -9,7 +9,8 @@ export const useQueryTableDataListExam = () => {
   const { search } = location;
   const userInfo = useRecoilValue(userInfoAtom);
 
-  const creatorId = userInfo?.id !== '641eef0821477ff3d7a94724' && `&creatorId=${userInfo?.id}`;
+  const creatorId = userInfo?.id !== '641eef0821477ff3d7a94724' ? `&creatorId=${userInfo?.id}` : '';
+  console.log('creatorId', creatorId);
 
   return useQuery(['GET_TABLE_LIST_EXAM', search], () => {
     return API.request({

@@ -13,7 +13,7 @@ const UserInfo = () => {
 
   const { data: userInfo } = useQueryUserInfo();
 
-  const { fullName } = userInfo || {};
+  const { fullName, avatar } = userInfo || {};
 
   const onLogout = useCallback(() => {
     localStorage.removeItem(LS_KEY_SB_JWT);
@@ -27,7 +27,7 @@ const UserInfo = () => {
       <PopoverTrigger>
         <Flex>
           <Button borderRadius={20}>
-            <Image src={UserAvatarDefault} width={9} height={9} />
+            <Image src={avatar || UserAvatarDefault} width={9} height={9} />
             <Text as="span" ml={3}>
               {fullName}
             </Text>
