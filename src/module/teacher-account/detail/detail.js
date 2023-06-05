@@ -1,5 +1,7 @@
 import { Flex, Heading, List, ListIcon, ListItem, Text } from '@chakra-ui/react';
+import UserAvatarDefault from 'assets/images/user-avatar-default.png';
 import { ErrorScreen, LoadingScreen } from 'component/effect-screen';
+import Image from 'component/image/image';
 import dayjs from 'dayjs';
 import { memo } from 'react';
 import { IoMdCheckmarkCircle } from 'react-icons/io';
@@ -23,7 +25,7 @@ const TeacherAccountDetail = () => {
     return <ErrorScreen />;
   }
 
-  const { createdAt, fullName, subjectIds, username, followers } = userInfobyId;
+  const { createdAt, fullName, subjectIds, username, followers, avatar } = userInfobyId;
 
   return (
     <Flex direction="column" w={2 / 3} mx="auto" gap={10} my={10}>
@@ -33,6 +35,10 @@ const TeacherAccountDetail = () => {
             Thông tin tài khoản
           </Text>
         </Heading>
+      </Flex>
+
+      <Flex>
+        <Image src={avatar || UserAvatarDefault} height={60} borderRadius={100} />
       </Flex>
 
       <Flex>

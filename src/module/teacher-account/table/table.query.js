@@ -11,7 +11,7 @@ export const useQueryTableDataTeacherAccount = () => {
       params: {
         role: 'TEACHER',
 
-        sort: 'updatedAt desc'
+        sort: 'createdAt desc'
       },
       getTotal: true
     });

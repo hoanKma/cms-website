@@ -2,6 +2,7 @@ import { Flex } from '@chakra-ui/react';
 import { ButtonBack, ButtonSubmit } from 'component/button';
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useQueryUserInfoByID } from '../query';
 import { useResetAtom } from './custom-hook';
 import { useMutationCreateTeacherAccount } from './mutate';
 import Avatar from './subs/avatar';
@@ -23,13 +24,14 @@ const TeacherAccountCreate = () => {
 
   const [avaUrl, setAvaUrl] = useState('');
 
-  const [disable, setDisable] = useState(true);
-
   const resetAtom = useResetAtom();
 
   const onGoBack = useCallback(() => navigate(-1), [navigate]);
 
   const { mutate: createTeacherAccount, isLoading: loadingCreate } = useMutationCreateTeacherAccount();
+
+  const { data: userInfobyId, isLoading, isError } = useQueryUserInfoByID(id);
+  console.log('userInfobyId', userInfobyId);
 
   // const loadingAction = useMemo(() => loadingCreate || loadingUpdate, [loadingCreate, loadingUpdate]);
 
@@ -95,7 +97,6 @@ const TeacherAccountCreate = () => {
           <Flex justifyContent="center" mt={5} mb={10} gap={4}>
             <ButtonBack onClick={onGoBack} />
 
-            {/* <ButtonSubmit title={id ? 'Cập nhật' : 'Tạo mới'} isLoading={loadingAction} isDisabled={disable} /> */}
             <ButtonSubmit title={id ? 'Cập nhật' : 'Tạo mới'} isLoading={loadingCreate} />
           </Flex>
         </form>
