@@ -21,14 +21,6 @@ const LoginBox = memo(() => (
         <Heading as="h1" fontSize="3xl" fontWeight={600}>
           Đăng nhập Hệ thống quản trị Examination
         </Heading>
-        <Flex flex={1}>
-          <div
-            dangerouslySetInnerHTML={{
-              __html:
-                '<p>Cho hàm số&nbsp;<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>y</mi><mo>=</mo><mfrac><mrow class="MJX-TeXAtom-ORD"><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi></mrow><mrow class="MJX-TeXAtom-ORD"><mi>c</mi><mi>x</mi><mo>+</mo><mi>d</mi></mrow></mfrac></math>&nbsp;có đồ thị là đường cong trong hình vẽ bên. Tọa độ giao điểm của đồ thị hàm số đã cho và trục hoành là</p><figure class="image"><img src="https://video.vietjack.com/upload2/quiz_source1/2023/03/blobid0-1678429809.png" alt="Cho hàm số  y= ax+b/ cx+d có đồ thị là đường cong trong hình vẽ bên. Tọa độ giao điểm của đồ thị hàm số đã cho và trục hoành là   (ảnh 1)"></figure>'
-            }}
-          />
-        </Flex>
       </Flex>
 
       <LoginForm />
