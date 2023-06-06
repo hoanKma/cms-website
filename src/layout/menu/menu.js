@@ -49,7 +49,7 @@ export const MainMenu = memo(() => {
   return (
     <Flex direction="column" position="fixed" top={0} left={0} w="280px">
       <MenuHeader />
-      <Flex position="fixed" top="60px" left={0} pb="60px">
+      <Flex position="fixed" top="80px" left={0} pb="60px">
         <Menu config={config} data={DATA} />
       </Flex>
       <Flex pos="fixed" bottom={0} left={0} px={5} py={3} w="280px" justify="center">

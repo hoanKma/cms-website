@@ -1,17 +1,36 @@
-import { Flex, Heading, List, ListIcon, ListItem, Text } from '@chakra-ui/react';
+import { Button, Flex, Heading, List, ListIcon, ListItem, Text } from '@chakra-ui/react';
+import UserAvatarDefault from 'assets/images/user-avatar-default.png';
 import { ErrorScreen, LoadingScreen } from 'component/effect-screen';
+import Image from 'component/image/image';
 import dayjs from 'dayjs';
 import { useQueryUserInfo } from 'layout/header/query';
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import { IoMdCheckmarkCircle } from 'react-icons/io';
-import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { subjectAtom } from 'state-management/subject';
+import ChangeAvatarModal from './ChangeAvatarModal';
+import ChangePasswordPage from './ChangePasswordPage';
 
 const InfoDetail = () => {
   const { data: userInfo, isLoading, isError } = useQueryUserInfo();
 
   const subjectData = useRecoilValue(subjectAtom);
+
+  const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCloseChangePassword = () => {
+    setIsChangePasswordOpen(false);
+  };
 
   if (isLoading) {
     return <LoadingScreen />;
@@ -21,7 +40,7 @@ const InfoDetail = () => {
     return <ErrorScreen />;
   }
 
-  const { createdAt, fullName, subjectIds, username, id, followers } = userInfo;
+  const { createdAt, fullName, subjectIds, username, id, followers, avatar } = userInfo;
 
   return (
     <Flex direction="column" w={2 / 3} mx="auto" gap={10} my={10}>
@@ -31,6 +50,13 @@ const InfoDetail = () => {
             Thông tin tài khoản
           </Text>
         </Heading>
+      </Flex>
+
+      <Flex gap={8}>
+        <Image src={avatar || UserAvatarDefault} height={40} borderRadius={100} />
+        <Button onClick={handleOpenModal} alignSelf={'end'}>
+          Đổi avatar
+        </Button>
       </Flex>
 
       <Flex>
@@ -89,7 +115,7 @@ const InfoDetail = () => {
         </Flex>
       </Flex>
 
-      <Link to={`./cap-nhat/${id}`}>
+      <Flex>
         <Text
           bgColor="#f7941e"
           as="span"
@@ -99,10 +125,14 @@ const InfoDetail = () => {
           borderRadius={5}
           _hover={{ bgColor: '#ec8609' }}
           _active={{ bgColor: '#ec8609' }}
+          onClick={() => setIsChangePasswordOpen(true)}
+          cursor={'pointer'}
         >
-          Cập nhật thông tin
+          Đổi mật khẩu
         </Text>
-      </Link>
+      </Flex>
+      <ChangeAvatarModal isOpen={isModalOpen} onClose={handleCloseModal} id={id} />
+      <ChangePasswordPage isOpen={isChangePasswordOpen} onClose={handleCloseChangePassword} />
     </Flex>
   );
 };

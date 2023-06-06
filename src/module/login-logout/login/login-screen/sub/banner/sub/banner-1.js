@@ -1,8 +1,10 @@
 import { memo, useEffect, useRef } from 'react';
 
-import { Text, VStack } from '@chakra-ui/react';
+import { Heading, Text, VStack } from '@chakra-ui/react';
+import Banner1Img from 'assets/images/Picture1.png';
 import { useRecoilValue } from 'recoil';
 
+import Image from 'component/image/image';
 import { BannerSliderPositionAtom } from 'module/login-logout/recoil';
 
 const Banner1 = memo(() => {
@@ -26,24 +28,21 @@ const Banner1 = memo(() => {
       color="#FFF"
       justify="center"
       alignItems="center"
+      gap={4}
     >
       {/**
        * scale-down behaves like:
        * - none when container is bigger
        * - contain when container is smaller
        */}
-      {/* <Image src={Banner1Img} fit="scale-down" height="80%" /> */}
-      <Text>ảnh banner 1</Text>
+      <Image src={Banner1Img} fit="scale-down" height="70%" borderRadius={10} />
 
-      <VStack maxW="500px" px={4}>
-        {/* <Heading as="h1" fontSize="36px" fontWeight={700} textAlign="center">
-          Khám phá
-        </Heading>
-        <Text fontSize="lg" textAlign="center">
-          Kết nối thông tin đa dạng, minh bạch và là cầu nối tin cậy cho mọi nhà đầu tư.
-        </Text> */}
-        <Text>Tiêu đề banner1</Text>
-      </VStack>
+      <Heading as="h1" fontSize="20px" fontWeight={700} textAlign="center">
+        Khám phá
+        <Text fontSize="lg" textAlign="center" pt={4}>
+          Ứng dụng trắc nghiệm tốt nhất cho học sinh THPT
+        </Text>
+      </Heading>
     </VStack>
   );
 });

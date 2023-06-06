@@ -1,8 +1,10 @@
 import { memo, useEffect, useRef } from 'react';
 
-import { Text, VStack } from '@chakra-ui/react';
+import { Heading, Text, VStack } from '@chakra-ui/react';
+import Banner1Img from 'assets/images/Picture3.png';
 import { useRecoilValue } from 'recoil';
 
+import Image from 'component/image/image';
 import { BannerSliderPositionAtom } from 'module/login-logout/recoil';
 
 const Banner3 = memo(() => {
@@ -16,19 +18,15 @@ const Banner3 = memo(() => {
 
   return (
     // Read <Banner1> for props explanation
-    <VStack ref={ref} w="100%" flexShrink={0} color="#FFF" h="full" justify="center" alignItems="center">
-      {/* <Image src={Banner3Img} fit="scale-down" height="80%" /> */}
-      <Text>ảnh banner 3</Text>
+    <VStack ref={ref} w="100%" flexShrink={0} color="#FFF" justify="center" alignItems="center">
+      <Image src={Banner1Img} height="400px" borderRadius={10} />
 
-      <VStack maxW="500px" px={4}>
-        {/* <Heading as="h1" fontSize="36px" fontWeight={700} textAlign="center">
-          Bảng tin
-        </Heading>
-        <Text fontSize="lg" textAlign="center">
-          Kết nối thông tin, kinh nghiệm, kiến thức đầu tư giữa các thành viên trong cộng đồng.
-        </Text> */}
-        <Text>Tiêu đề banner 3</Text>
-      </VStack>
+      <Heading as="h1" fontSize="20px" fontWeight={700} textAlign="center">
+        Đồng hành
+        <Text fontSize="lg" textAlign="center" pt={4}>
+          Điểm số tối ưu
+        </Text>
+      </Heading>
     </VStack>
   );
 });
