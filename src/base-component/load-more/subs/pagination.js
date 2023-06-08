@@ -7,7 +7,7 @@ const LoadMorePaging = (props) => {
   const { defaultValue, maxPage, onChange } = props;
   const [page, setPage] = useState(defaultValue || 1);
 
-  const onChangePage = useCallback((e) => setPage(e.target.value), []);
+  const onChangePage = useCallback((e) => setPage(Number(e.target.value)), []);
 
   const onKeyDownSearch = useCallback(
     (e) => {
